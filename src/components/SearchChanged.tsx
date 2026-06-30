@@ -1,5 +1,6 @@
-import React, { useRef } from 'react'
+import { useRef } from 'react'
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion'
+import TextReveal from './TextReveal'
 
 const fadeUp = (delay: number) => ({
   initial: { opacity: 0, y: 40 },
@@ -8,24 +9,24 @@ const fadeUp = (delay: number) => ({
   transition: { duration: 0.8, delay, ease: [0.25, 0.1, 0.25, 1] },
 })
 
-const platforms = [
+const pillars = [
   {
-    name: 'ChatGPT',
+    name: 'Design',
     description:
-      'Konverzační AI, která rozumí kontextu a generuje lidsky znějící odpovědi na jakýkoliv dotaz.',
-    icon: 'https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg',
+      'Každý pixel má důvod. Tvoříme vizuální identitu, která okamžitě sdělí hodnotu vaší značky — ještě než uživatel přečte jediné slovo.',
+    image: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800&h=500&fit=crop&q=80',
   },
   {
-    name: 'Perplexity',
+    name: 'Rychlost',
     description:
-      'AI vyhledávač, který poskytuje přímé odpovědi s citovanými zdroji a informacemi v reálném čase.',
-    icon: 'https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/perplexity-ai-icon.png',
+      'Web, který se načte za 3 sekundy, ztrácí 53 % návštěvníků. Naše weby jsou optimalizované pro Core Web Vitals a rychlost, která konvertuje.',
+    image: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&h=500&fit=crop&q=80',
   },
   {
-    name: 'Google AI',
+    name: 'Konverze',
     description:
-      'Integrované AI funkce napříč Google Vyhledáváním s inteligentními souhrny a vylepšenými výsledky.',
-    icon: 'https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg',
+      'Hezký web nestačí. Každý prvek navrhujeme s ohledem na cestu uživatele — od prvního dojmu až po odeslání poptávky.',
+    image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=500&fit=crop&q=80',
   },
 ]
 
@@ -59,7 +60,7 @@ const SearchChanged = () => {
           {...fadeUp(0)}
           className="text-5xl md:text-7xl lg:text-8xl font-medium tracking-[-2px] text-center mb-6"
         >
-          Vyhledávání se{' '}
+          První dojem.{' '}
           <motion.span
             initial={{ opacity: 0, skewX: -10 }}
             whileInView={{ opacity: 1, skewX: 0 }}
@@ -67,26 +68,23 @@ const SearchChanged = () => {
             transition={{ duration: 0.8, delay: 0.3 }}
             className="font-serif italic font-normal inline-block"
           >
-            změnilo.
-          </motion.span>{' '}
-          A vy?
+            Jen jednou.
+          </motion.span>
         </motion.h2>
 
-        {/* Subtitle */}
-        <motion.p
-          {...fadeUp(0.15)}
-          className="text-muted-foreground text-lg max-w-2xl mx-auto text-center mb-24"
-        >
-          Způsob, jakým lidé objevují informace, se zásadně proměnil. Statické
-          výsledky vyhledávání ustupují dynamickým, konverzačním zážitkům,
-          které vyžadují nový přístup k obsahu.
-        </motion.p>
+        <div className="mb-24">
+          <TextReveal
+            text="Uživatelé si vytvoří názor na váš web za 50 milisekund. Než stihnou přečíst jedinou větu, už vědí, zda vám důvěřují. Tři pilíře, na kterých stavíme každý projekt."
+            className="text-muted-foreground text-lg max-w-2xl mx-auto text-center"
+            delay={0.15}
+          />
+        </div>
 
-        {/* Platform Cards */}
+        {/* Pillar Cards */}
         <div className="grid md:grid-cols-3 gap-12 md:gap-8 mb-20">
-          {platforms.map((platform, index) => (
+          {pillars.map((pillar, index: number) => (
             <motion.div
-              key={platform.name}
+              key={pillar.name}
               initial={{ opacity: 0, y: 60, rotateX: 15 }}
               whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
               viewport={{ once: true, margin: '-50px' }}
@@ -96,32 +94,21 @@ const SearchChanged = () => {
                 ease: [0.25, 0.1, 0.25, 1],
               }}
               whileHover={{ y: -8, transition: { duration: 0.3 } }}
-              className="flex flex-col items-center text-center group cursor-default"
+              className="flex flex-col items-start text-left group cursor-default"
             >
-              <motion.div
-                whileHover={{ scale: 1.1, rotate: 5 }}
-                transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                className="w-[200px] h-[200px] flex items-center justify-center mb-6"
-              >
+              <div className="w-full aspect-video rounded-xl overflow-hidden mb-6 bg-white/5 ring-1 ring-white/5 group-hover:ring-white/15 transition-all duration-300">
                 <img
-                  src={platform.icon}
-                  alt={platform.name}
-                  className="w-32 h-32 object-contain opacity-80 group-hover:opacity-100 transition-opacity duration-500"
-                  onError={(e) => {
-                    const target = e.target as HTMLImageElement
-                    target.style.display = 'none'
-                    const fallback = target.parentElement?.querySelector('.fallback-icon') as HTMLElement
-                    if (fallback) fallback.style.display = 'flex'
-                  }}
+                  src={pillar.image}
+                  alt={pillar.name}
+                  className="w-full h-full object-cover opacity-75 group-hover:opacity-100 transition-opacity duration-500"
                 />
-                <div className="fallback-icon hidden w-32 h-32 rounded-2xl bg-white/5 border border-white/10 items-center justify-center text-2xl font-bold text-foreground/40">
-                  {platform.name[0]}
-                </div>
-              </motion.div>
-              <h3 className="font-semibold text-base mb-2">{platform.name}</h3>
-              <p className="text-muted-foreground text-sm max-w-xs leading-relaxed">
-                {platform.description}
-              </p>
+              </div>
+              <h3 className="font-semibold text-base mb-2">{pillar.name}</h3>
+              <TextReveal
+                text={pillar.description}
+                className="text-muted-foreground text-sm leading-relaxed"
+                delay={0.05 * index}
+              />
             </motion.div>
           ))}
         </div>
@@ -141,7 +128,7 @@ const SearchChanged = () => {
             transition={{ duration: 1, delay: 0.3 }}
             className="text-muted-foreground text-sm"
           >
-            Pokud neodpovíte na otázky, odpoví někdo jiný.
+            Pokud váš web neprodává, prodává konkurence.
           </motion.p>
         </motion.div>
       </div>

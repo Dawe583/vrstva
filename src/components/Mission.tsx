@@ -1,12 +1,5 @@
-import React, { useRef } from 'react'
+import { useRef } from 'react'
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion'
-
-const fadeUp = (delay: number) => ({
-  initial: { opacity: 0, y: 40 },
-  whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true, margin: '-100px' },
-  transition: { duration: 0.8, delay, ease: [0.25, 0.1, 0.25, 1] },
-})
 
 const WordReveal = ({
   text,
@@ -78,15 +71,16 @@ const Mission = () => {
   const videoRotate = useTransform(scrollYProgress, [0, 0.5, 1], [5, 0, -3])
   const videoY = useTransform(scrollYProgress, [0, 0.5, 1], [100, 0, -50])
 
-  const springScale = useSpring(videoScale, { stiffness: 100, damping: 30 })
-  const springRotate = useSpring(videoRotate, { stiffness: 100, damping: 30 })
-  const springY = useSpring(videoY, { stiffness: 100, damping: 30 })
+  // ponytail: lower stiffness = slower, dreamier 3D tilt
+  const springScale = useSpring(videoScale, { stiffness: 35, damping: 22 })
+  const springRotate = useSpring(videoRotate, { stiffness: 35, damping: 22 })
+  const springY = useSpring(videoY, { stiffness: 35, damping: 22 })
 
   return (
     <section
       ref={containerRef}
       id="filozofie"
-      className="pt-0 pb-32 md:pb-44 px-8 md:px-28 relative overflow-hidden"
+      className="py-32 md:py-44 px-8 md:px-28 relative overflow-hidden"
     >
       {/* Background grid pattern */}
       <div className="absolute inset-0 opacity-[0.03]" style={{
@@ -130,8 +124,8 @@ const Mission = () => {
 
         {/* Paragraph 1 */}
         <WordReveal
-          text="Budujeme prostor, kde zvědavost potkává jasnost — kde čtenáři nacházejí hloubku, autoři dosah a každý newsletter se stává konverzací, která stojí za to."
-          highlightWords={['zvědavost', 'potkává', 'jasnost']}
+          text="Věříme, že web není jen vizitka — je to váš nejlepší obchodní zástupce. Pracuje 24 hodin denně, 7 dní v týdnu a nikdy nevolá nemocný."
+          highlightWords={['nejlepší', 'obchodní', 'zástupce']}
           className="text-2xl md:text-4xl lg:text-5xl font-medium tracking-[-1px] leading-[1.2] text-center max-w-5xl mx-auto"
           scrollYProgress={scrollYProgress}
           startProgress={0.15}
@@ -140,7 +134,7 @@ const Mission = () => {
 
         {/* Paragraph 2 */}
         <WordReveal
-          text="Platforma, kde obsah, komunita a vhled plynou dohromady — s menším šumem, menším třením a více smyslu pro každého zúčastněného."
+          text="Každý projekt začínáme otázkou: co má web přinést? Pak navrhujeme zpětně — od výsledku k prvnímu pixelu."
           highlightWords={[]}
           className="text-xl md:text-2xl lg:text-3xl font-medium mt-10 leading-[1.3] text-center max-w-4xl mx-auto"
           scrollYProgress={scrollYProgress}

@@ -1,5 +1,6 @@
-import React, { useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion'
+import TextReveal from './TextReveal'
 import Hls from 'hls.js'
 
 const fadeUp = (delay: number) => ({
@@ -103,7 +104,7 @@ const CTA = () => {
           {...fadeUp(0.1)}
           className="text-4xl md:text-6xl font-medium tracking-[-1.5px] mb-6"
         >
-          Začněte svou{' '}
+          Začněme váš{' '}
           <motion.span
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -111,46 +112,48 @@ const CTA = () => {
             transition={{ duration: 0.8, delay: 0.4 }}
             className="font-serif italic font-normal inline-block"
           >
-            cestu
+            projekt
           </motion.span>
         </motion.h2>
 
         {/* Subtitle */}
-        <motion.p
-          {...fadeUp(0.2)}
-          className="text-muted-foreground text-lg mb-10 max-w-lg mx-auto"
-        >
-          Připojte se k tisícům čtenářů a autorů, kteří jsou již součástí
-          komunity Branzly. Začněte tvořit nebo objevovat obsah, který má smysl.
-        </motion.p>
+        <div className="mb-10">
+          <TextReveal
+            text="Bezplatná konzultace, žádné závazky. Řekneme vám upřímně, co vašemu webu chybí — a co s tím lze dělat."
+            className="text-muted-foreground text-lg max-w-lg mx-auto text-center"
+            delay={0.2}
+          />
+        </div>
 
         {/* Buttons */}
         <motion.div
           {...fadeUp(0.3)}
           className="flex flex-col sm:flex-row items-center justify-center gap-4"
         >
-          <motion.button
+          <motion.a
+            href="mailto:dsak01392@gmail.com"
             whileHover={{ scale: 1.05, y: -2 }}
             whileTap={{ scale: 0.95 }}
             transition={{ type: 'spring', stiffness: 400, damping: 17 }}
             className="bg-foreground text-background rounded-lg px-8 py-3.5 font-semibold text-sm relative overflow-hidden group"
           >
-            <span className="relative z-10">Odebírat nyní</span>
+            <span className="relative z-10">Domluvit konzultaci zdarma</span>
             <motion.div
               className="absolute inset-0 bg-white/10"
               initial={{ x: '-100%' }}
               whileHover={{ x: '100%' }}
               transition={{ duration: 0.5 }}
             />
-          </motion.button>
-          <motion.button
+          </motion.a>
+          <motion.a
+            href="#pripady-pouziti"
             whileHover={{ scale: 1.05, y: -2 }}
             whileTap={{ scale: 0.95 }}
             transition={{ type: 'spring', stiffness: 400, damping: 17 }}
             className="liquid-glass rounded-lg px-8 py-3.5 font-semibold text-sm"
           >
-            Začít psát
-          </motion.button>
+            Zobrazit portfolio
+          </motion.a>
         </motion.div>
       </motion.div>
     </section>

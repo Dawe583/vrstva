@@ -1,12 +1,14 @@
-import React, { useState } from 'react'
+import { useState, Fragment } from 'react'
 import { motion, useScroll, useMotionValueEvent } from 'framer-motion'
 import { Instagram, Linkedin, Twitter, Menu, X } from 'lucide-react'
+import Logo from './Logo'
 
 const navLinks = [
   { label: 'Domů', href: '#hero' },
-  { label: 'Jak to funguje', href: '#jak-to-funguje' },
-  { label: 'Filozofie', href: '#filozofie' },
-  { label: 'Případy použití', href: '#pripady-pouziti' },
+  { label: 'Jak pracujeme', href: '#jak-to-funguje' },
+  { label: 'Náš přístup', href: '#filozofie' },
+  { label: 'Portfolio', href: '#pripady-pouziti' },
+  { label: 'Kontakt', href: '#kontakt' },
 ]
 
 const Navbar = () => {
@@ -35,15 +37,9 @@ const Navbar = () => {
     >
       {/* Logo */}
       <a href="#hero" className="flex items-center gap-3 group">
-        <div className="relative flex items-center justify-center">
-          <motion.div
-            whileHover={{ rotate: 180 }}
-            transition={{ duration: 0.6, ease: 'easeInOut' }}
-            className="w-7 h-7 rounded-full border-2 border-foreground/60 flex items-center justify-center"
-          >
-            <div className="w-3 h-3 rounded-full border border-foreground/60" />
-          </motion.div>
-        </div>
+        <motion.div whileHover={{ scale: 1.1 }} transition={{ duration: 0.3 }}>
+          <Logo size={16} className="text-foreground/80 group-hover:text-foreground transition-colors duration-300" />
+        </motion.div>
         <span className="font-bold text-lg tracking-tight group-hover:tracking-wide transition-all duration-300">
           Branzly
         </span>
@@ -52,7 +48,7 @@ const Navbar = () => {
       {/* Nav Links — desktop */}
       <div className="hidden md:flex items-center gap-1">
         {navLinks.map((link, index) => (
-          <React.Fragment key={link.label}>
+          <Fragment key={link.label}>
             <motion.a
               href={link.href}
               whileHover={{ y: -2 }}
@@ -71,11 +67,11 @@ const Navbar = () => {
                 •
               </motion.span>
             )}
-          </React.Fragment>
+          </Fragment>
         ))}
       </div>
 
-      {/* Social Icons + Mobile toggle */}
+      {/* Social Icons + CTA + Mobile toggle */}
       <div className="flex items-center gap-3">
         <div className="hidden sm:flex items-center gap-3">
           {[Instagram, Linkedin, Twitter].map((Icon, index) => (
@@ -92,6 +88,17 @@ const Navbar = () => {
             </motion.button>
           ))}
         </div>
+        <motion.a
+          href="mailto:dsak01392@gmail.com"
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.8 }}
+          whileHover={{ scale: 1.03 }}
+          whileTap={{ scale: 0.97 }}
+          className="hidden md:flex bg-foreground text-background rounded-full px-5 py-2 text-xs font-semibold tracking-wide"
+        >
+          Konzultace zdarma
+        </motion.a>
 
         {/* Mobile menu toggle */}
         <button

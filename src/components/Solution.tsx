@@ -1,5 +1,6 @@
-import React, { useRef } from 'react'
+import { useRef } from 'react'
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion'
+import TextReveal from './TextReveal'
 
 const fadeUp = (delay: number) => ({
   initial: { opacity: 0, y: 40 },
@@ -10,24 +11,24 @@ const fadeUp = (delay: number) => ({
 
 const features = [
   {
-    title: 'Kurátorovaný feed',
+    title: 'UI/UX Design',
     description:
-      'Personalizované proudy obsahu, které překonávají šum a doručují to, co pro každého čtenáře nejvíce znamená.',
+      'Wireframy, prototypy a finální design v Figma. Každé rozhraní testujeme na reálných uživatelích — ne na předpokladech.',
   },
   {
-    title: 'Nástroje pro autory',
+    title: 'Vývoj',
     description:
-      'Výkonná sada pro tvorbu s analytikou, plánováním a distribučními nástroji pro moderní vypravěče.',
+      'React, Next.js, čistý kód. Weby, které se načítají pod 1 sekundu a dosahují 95+ bodů na Google PageSpeed.',
   },
   {
-    title: 'Komunita',
+    title: 'SEO & Analytika',
     description:
-      'Zapojte se s promyšlenými čtenáři a kolegy autory prostřednictvím komentářů, diskuzí a kolaborativních prostorů.',
+      'Technické SEO v základu, ne jako příplatek. Google Analytics 4, heatmapy a A/B testování pro kontinuální růst.',
   },
   {
-    title: 'Distribuce',
+    title: 'Podpora',
     description:
-      'Chytré algoritmy a sdílení napříč platformami, které pomáhají vašemu obsahu oslovit správné publikum ve správný čas.',
+      'Web není hotový ve chvíli spuštění. Nabízíme měsíční retainer — aktualizace, bezpečnost a iterace na základě dat.',
   },
 ]
 
@@ -86,7 +87,7 @@ const Solution = () => {
           {...fadeUp(0.1)}
           className="text-4xl md:text-6xl font-medium tracking-[-1.5px] mb-16"
         >
-          Platforma pro{' '}
+          Co dostanete v{' '}
           <motion.span
             initial={{ opacity: 0, skewX: -8 }}
             whileInView={{ opacity: 1, skewX: 0 }}
@@ -94,9 +95,8 @@ const Solution = () => {
             transition={{ duration: 0.8, delay: 0.3 }}
             className="font-serif italic font-normal inline-block"
           >
-            smysluplný
-          </motion.span>{' '}
-          obsah
+            každém projektu
+          </motion.span>
         </motion.h2>
 
         {/* Video with parallax */}
@@ -151,9 +151,11 @@ const Solution = () => {
               <h3 className="font-semibold text-base mb-3 group-hover:text-foreground transition-colors duration-300">
                 {feature.title}
               </h3>
-              <p className="text-muted-foreground text-sm leading-relaxed">
-                {feature.description}
-              </p>
+              <TextReveal
+                text={feature.description}
+                className="text-muted-foreground text-sm leading-relaxed"
+                delay={0.05 * index}
+              />
             </motion.div>
           ))}
         </div>
