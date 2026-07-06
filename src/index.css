@@ -62,14 +62,25 @@ body {
   color: var(--color-ink);
 }
 
-/* Marquee: čisté CSS, respektuje reduced motion */
-@media (prefers-reduced-motion: no-preference) {
-  .marquee-track {
-    animation: marquee 30s linear infinite;
-  }
+/* Marquee běží na všech zařízeních (vědomé přání uživatele). */
+.marquee-track {
+  animation: marquee 30s linear infinite;
 }
 @keyframes marquee {
   to {
     transform: translateX(-50%);
+  }
+}
+
+/* Pomalý drift auroru v živém pozadí */
+.aurora-drift {
+  animation: aurora 18s ease-in-out infinite alternate;
+}
+@keyframes aurora {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  to {
+    transform: translate3d(6%, -4%, 0) scale(1.15);
   }
 }

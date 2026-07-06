@@ -1,20 +1,18 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useReducedMotion } from "motion/react";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const TEXT =
   "Vrstva je nezávislé designové studio z Prahy. Navrhujeme a stavíme weby pro značky, které to myslí vážně. Žádné šablony, žádný hluk. Jen promyšlený design, čistý kód a výsledky, které poznáte na číslech.";
 
-/** Text se rozsvěcuje slovo po slově při scrollu (GSAP scrub). */
+/** Text se rozsvěcuje slovo po slově při scrollu (GSAP scrub). Běží všude. */
 export default function About() {
   const ref = useRef<HTMLDivElement>(null);
-  const reduce = useReducedMotion();
 
   useEffect(() => {
-    if (reduce || !ref.current) return;
+    if (!ref.current) return;
     const ctx = gsap.context(() => {
       gsap.fromTo(
         ".about-word",
@@ -33,7 +31,7 @@ export default function About() {
       );
     }, ref);
     return () => ctx.revert();
-  }, [reduce]);
+  }, []);
 
   return (
     <section id="studio" className="py-32 md:py-44">

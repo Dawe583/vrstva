@@ -1,7 +1,8 @@
 import { useEffect, useRef } from "react";
+import { motion } from "motion/react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useReducedMotion } from "motion/react";
+import { EASE } from "../motion";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -12,14 +13,13 @@ const PROJECTS = [
   { name: "Mezanin", meta: "Hotel a rezervace, 2024", seed: "vrstva-hotel" },
 ];
 
-/** Horizontal scroll-hijack (desktop), vertikální stack na mobilu. */
+/** Horizontal scroll-hijack (desktop), vertikální stack s reveal na mobilu. */
 export default function Work() {
   const wrap = useRef<HTMLElement>(null);
   const track = useRef<HTMLDivElement>(null);
-  const reduce = useReducedMotion();
 
   useEffect(() => {
-    if (reduce || !wrap.current || !track.current) return;
+    if (!wrap.current || !track.current) return;
     const mm = gsap.matchMedia();
     mm.add("(min-width: 768px)", () => {
       const distance = track.current!.scrollWidth - window.innerWidth;
@@ -37,7 +37,7 @@ export default function Work() {
       });
     });
     return () => mm.revert();
-  }, [reduce]);
+  }, []);
 
   return (
     <section id="prace" ref={wrap} className="relative overflow-hidden py-24 md:py-0">
@@ -55,13 +55,20 @@ export default function Work() {
         </div>
 
         {PROJECTS.map((p, i) => (
-          <article key={p.name} className="group md:w-[52vw] md:shrink-0">
+          <motion.article
+            key={p.name}
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.7, ease: EASE }}
+            className="group md:w-[52vw] md:shrink-0"
+          >
             <div className="overflow-hidden">
               <img
                 src={`https://picsum.photos/seed/${p.seed}/1300/860`}
                 alt={`Projekt ${p.name}`}
                 loading="lazy"
-                className="aspect-[15/10] w-full object-cover grayscale-[0.35] transition-all duration-700 group-hover:scale-[1.04] group-hover:grayscale-0"
+                className="aspect-[15/10] w-full object-cover grayscale-[0.35] transition-all duration-[900ms] ease-out group-hover:scale-[1.04] group-hover:grayscale-0"
               />
             </div>
             <div className="mt-5 flex items-baseline justify-between border-t border-line pt-4">
@@ -71,7 +78,7 @@ export default function Work() {
               <span className="text-sm text-mute">{p.meta}</span>
             </div>
             <span className="sr-only">Projekt {i + 1}</span>
-          </article>
+          </motion.article>
         ))}
       </div>
     </section>
