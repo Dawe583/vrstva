@@ -1,185 +1,85 @@
-import { useRef } from 'react'
-import { motion, useScroll, useTransform, useSpring } from 'framer-motion'
-import TextReveal from './TextReveal'
+import { useRef } from "react";
+import { motion, useScroll, useTransform, useReducedMotion } from "motion/react";
+import { ArrowDownRight } from "@phosphor-icons/react";
+import MagneticButton from "./MagneticButton";
+import { scrollToId } from "../lenis";
 
-const fadeUp = (delay: number) => ({
-  initial: { opacity: 0, y: 40 },
-  whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true, margin: '-100px' },
-  transition: { duration: 0.8, delay, ease: [0.25, 0.1, 0.25, 1] },
-})
+const LINE_EASE = [0.16, 1, 0.3, 1] as const;
 
-const avatars = [
-  'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&h=80&fit=crop&q=80',
-  'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&q=80',
-  'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=80&h=80&fit=crop&q=80',
-]
-
-const Hero = () => {
-  const sectionRef = useRef<HTMLElement>(null)
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ['start start', 'end start'],
-  })
-
-  const videoScale = useTransform(scrollYProgress, [0, 1], [1, 1.3])
-  const videoOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0])
-  const textY = useTransform(scrollYProgress, [0, 1], [0, 150])
-  const textOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0])
-
-  const springVideoScale = useSpring(videoScale, { stiffness: 100, damping: 30 })
-
+function Line({ text, delay, ready }: { text: string; delay: number; ready: boolean }) {
+  const reduce = useReducedMotion();
   return (
-    <section
-      ref={sectionRef}
-      id="hero"
-      className="relative min-h-screen flex items-center justify-center overflow-hidden"
-    >
-      {/* Background Video with parallax */}
-      <motion.div style={{ scale: springVideoScale, opacity: videoOpacity }} className="absolute inset-0">
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="absolute inset-0 w-full h-full object-cover"
-        >
-          <source
-            src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260325_120549_0cd82c36-56b3-4dd9-b190-069cfc3a623f.mp4"
-            type="video/mp4"
-          />
-        </video>
-      </motion.div>
-
-      {/* Bottom Gradient */}
-      <div className="absolute bottom-0 left-0 right-0 h-64 bg-gradient-to-t from-background to-transparent z-[1]" />
-
-      {/* Floating particles */}
-      <div className="absolute inset-0 z-[2] overflow-hidden pointer-events-none">
-        {[...Array(6)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute w-1 h-1 bg-white/20 rounded-full"
-            style={{
-              left: `${15 + i * 15}%`,
-              top: `${20 + (i % 3) * 25}%`,
-            }}
-            animate={{
-              y: [0, -30, 0],
-              opacity: [0.2, 0.6, 0.2],
-            }}
-            transition={{
-              duration: 4 + i,
-              repeat: Infinity,
-              ease: 'easeInOut',
-              delay: i * 0.5,
-            }}
-          />
-        ))}
-      </div>
-
-      {/* Content */}
-      <motion.div
-        style={{ y: textY, opacity: textOpacity }}
-        className="relative z-10 pt-28 md:pt-32 px-8 text-center max-w-4xl mx-auto"
+    <span className="block overflow-hidden pb-1">
+      <motion.span
+        className="block"
+        initial={reduce ? false : { y: "110%" }}
+        animate={ready ? { y: 0 } : undefined}
+        transition={{ duration: 1, delay, ease: LINE_EASE }}
       >
-        {/* Social proof row */}
-        <motion.div
-          {...fadeUp(0)}
-          className="flex items-center justify-center gap-3 mb-8"
-        >
-          <div className="flex -space-x-2">
-            {avatars.map((src, i) => (
-              <motion.img
-                key={i}
-                src={src}
-                alt={`Klient ${i + 1}`}
-                initial={{ opacity: 0, scale: 0, x: 20 }}
-                animate={{ opacity: 1, scale: 1, x: 0 }}
-                transition={{ delay: 0.2 + i * 0.1, duration: 0.5 }}
-                className="w-8 h-8 rounded-full border-2 border-background object-cover"
-              />
-            ))}
-          </div>
-          <motion.span
-            initial={{ opacity: 0, x: -10 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.6 }}
-            className="text-muted-foreground text-sm"
-          >
-            <span className="text-foreground font-medium">47 projektů</span> · průměrný nárůst konverzí <span className="text-foreground font-medium">+38 %</span>
-          </motion.span>
-        </motion.div>
-
-        {/* Heading */}
-        <motion.h1
-          {...fadeUp(0.15)}
-          className="text-5xl md:text-7xl lg:text-8xl font-medium tracking-[-2px] mb-6 leading-[1.1]"
-        >
-          Weby, které{' '}
-          <motion.span
-            initial={{ opacity: 0, rotate: -5 }}
-            animate={{ opacity: 1, rotate: 0 }}
-            transition={{ delay: 0.8, duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
-            className="font-serif italic font-normal inline-block"
-          >
-            prodávají
-          </motion.span>
-        </motion.h1>
-
-        {/* Subtitle */}
-        <div className="mb-10" style={{ color: 'hsl(var(--hero-subtitle))' }}>
-          <TextReveal
-            text="Tvoříme prémiové weby pro firmy, které nechtějí být průměrné. Design, který zaujme. Kód, který letí. Výsledky, které se měří."
-            className="text-lg max-w-2xl mx-auto text-center"
-            delay={0.3}
-          />
-        </div>
-
-        {/* CTA */}
-        <motion.div
-          {...fadeUp(0.45)}
-          className="flex flex-col sm:flex-row items-center justify-center gap-4"
-        >
-          <motion.a
-            href="#kontakt"
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.98 }}
-            className="bg-foreground text-background rounded-full px-10 py-4 text-sm font-semibold tracking-wide"
-          >
-            Domluvit konzultaci zdarma
-          </motion.a>
-          <motion.a
-            href="#pripady-pouziti"
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.98 }}
-            className="liquid-glass rounded-full px-8 py-4 text-sm font-medium text-foreground/80"
-          >
-            Zobrazit portfolio →
-          </motion.a>
-        </motion.div>
-
-        {/* Scroll indicator */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.2 }}
-          className="mt-16 flex flex-col items-center gap-2"
-        >
-          <span className="text-muted-foreground text-xs tracking-widest uppercase">
-            Scroll
-          </span>
-          <motion.div
-            animate={{ y: [0, 8, 0] }}
-            transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
-            className="w-5 h-8 rounded-full border border-muted-foreground/30 flex items-start justify-center p-1"
-          >
-            <motion.div className="w-1 h-2 bg-muted-foreground/50 rounded-full" />
-          </motion.div>
-        </motion.div>
-      </motion.div>
-    </section>
-  )
+        {text}
+      </motion.span>
+    </span>
+  );
 }
 
-export default Hero
+export default function Hero({ ready }: { ready: boolean }) {
+  const ref = useRef<HTMLElement>(null);
+  const reduce = useReducedMotion();
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
+  const imgY = useTransform(scrollYProgress, [0, 1], ["0%", reduce ? "0%" : "18%"]);
+
+  return (
+    <section id="uvod" ref={ref} className="relative min-h-[100dvh] overflow-hidden">
+      <div className="mx-auto grid max-w-[1400px] grid-cols-1 gap-10 px-6 pt-24 md:grid-cols-12 md:px-10 md:pt-24">
+        <div className="md:col-span-12">
+          <h1 className="font-display text-[13vw] font-medium leading-[0.95] tracking-tighter md:text-[7.5vw]">
+            <Line text="Weby, které si" delay={0.1} ready={ready} />
+            <Line text="lidé pamatují." delay={0.22} ready={ready} />
+          </h1>
+        </div>
+
+        <motion.div
+          className="order-2 md:order-1 md:col-span-5 md:self-end md:pb-16"
+          initial={reduce ? false : { opacity: 0, y: 24 }}
+          animate={ready ? { opacity: 1, y: 0 } : undefined}
+          transition={{ duration: 0.8, delay: 0.5, ease: LINE_EASE }}
+        >
+          <p className="max-w-[42ch] text-base leading-relaxed text-mute md:text-lg">
+            Prémiové studio pro značky, které chtějí víc než šablonu.
+            Strategie, design a vývoj pod jednou střechou.
+          </p>
+          <div className="mt-8 flex flex-wrap items-center gap-4">
+            <MagneticButton
+              onClick={() => scrollToId("#kontakt")}
+              className="rounded-full bg-accent px-7 py-3.5 text-sm font-medium text-ink transition-colors hover:bg-paper"
+            >
+              Nezávazná konzultace
+            </MagneticButton>
+            <MagneticButton
+              onClick={() => scrollToId("#prace")}
+              className="flex items-center gap-2 rounded-full border border-line px-7 py-3.5 text-sm text-paper transition-colors hover:border-paper/40"
+            >
+              Prohlédnout práce
+              <ArrowDownRight size={16} weight="bold" />
+            </MagneticButton>
+          </div>
+        </motion.div>
+
+        <motion.div
+          className="order-1 overflow-hidden md:order-2 md:col-span-6 md:col-start-7"
+          initial={reduce ? false : { clipPath: "inset(100% 0 0 0)" }}
+          animate={ready ? { clipPath: "inset(0% 0 0 0)" } : undefined}
+          transition={{ duration: 1.1, delay: 0.45, ease: LINE_EASE }}
+        >
+          <motion.img
+            src="https://picsum.photos/seed/vrstva-studio-hero/1400/1000"
+            alt="Ukázka práce studia Vrstva"
+            style={{ y: imgY }}
+            className="aspect-[14/10] w-full scale-110 object-cover grayscale-[0.3]"
+            loading="eager"
+          />
+        </motion.div>
+      </div>
+    </section>
+  );
+}
