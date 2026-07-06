@@ -27,7 +27,7 @@ export const PROJECTS: Project[] = [
     year: "2026",
     brand: "Gentle Park",
     title: "Tričko Slims",
-    img: `${IMG}dEyd7hRzg4wgPG0RDXNDM1Moak.webp?width=1600&height=917`,
+    img: `${IMG}dEyd7hRzg4wgPG0RDXNDM1Moak.webp?width=1200&height=688`,
   },
   {
     slug: "kryt-iphone",
@@ -43,7 +43,7 @@ export const PROJECTS: Project[] = [
     year: "2026",
     brand: "Lereve",
     title: "Only The Brave",
-    img: `${IMG}5Xl3vkxzIYkCslhhaUYSPzShNW0.webp?width=1600&height=917`,
+    img: `${IMG}5Xl3vkxzIYkCslhhaUYSPzShNW0.webp?width=1200&height=688`,
   },
   {
     slug: "opalovaci-krem",
@@ -51,7 +51,7 @@ export const PROJECTS: Project[] = [
     year: "2026",
     brand: "syagi",
     title: "Opalovací krém",
-    img: `${IMG}bFAJHKDeaSouskKTyxrbM32z0.png?width=1400&height=1189`,
+    img: `${IMG}bFAJHKDeaSouskKTyxrbM32z0.png?width=1200&height=1019`,
   },
   {
     slug: "na-miru",
@@ -59,7 +59,7 @@ export const PROJECTS: Project[] = [
     year: "2026",
     brand: "matcha club",
     title: "Návrh na míru",
-    img: `${IMG}AylmkRt1aL0hFRrC4xB5Tvwsg.webp?width=1600&height=917`,
+    img: `${IMG}AylmkRt1aL0hFRrC4xB5Tvwsg.webp?width=1200&height=688`,
   },
   {
     slug: "webdesign",
@@ -75,7 +75,7 @@ export const PROJECTS: Project[] = [
     year: "2026",
     brand: "Novili",
     title: "Pleťové sérum",
-    img: `${IMG}PA46gcLDDhOTxXBrPG24ffJvqY.webp?width=1600&height=917`,
+    img: `${IMG}PA46gcLDDhOTxXBrPG24ffJvqY.webp?width=1200&height=688`,
   },
   {
     slug: "casual-kosile",
@@ -83,7 +83,7 @@ export const PROJECTS: Project[] = [
     year: "2026",
     brand: "easy fashion",
     title: "Casual košile",
-    img: `${IMG}ZnHx1XRtOSRzIuEbTUJr8QOkHI.webp?width=1600&height=917`,
+    img: `${IMG}ZnHx1XRtOSRzIuEbTUJr8QOkHI.webp?width=1200&height=688`,
   },
 ];
 

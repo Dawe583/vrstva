@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
 import { MEDIA, STATS } from "../site";
 
@@ -14,7 +14,7 @@ function RoadBackground() {
 
       {/* zakřivené „curby" — konvergují k hornímu středu */}
       <svg
-        className="absolute left-1/2 top-[8%] h-[92%] w-[min(1200px,96vw)] -translate-x-1/2"
+        className="absolute left-1/2 top-[6%] h-[94%] w-[min(1200px,96vw)] -translate-x-1/2"
         viewBox="0 0 1000 700"
         fill="none"
         preserveAspectRatio="xMidYMax meet"
@@ -33,7 +33,7 @@ function RoadBackground() {
       </svg>
 
       {/* soustředné kruhy u paty hera */}
-      <div className="absolute bottom-[-46vw] left-1/2 -translate-x-1/2">
+      <div className="absolute bottom-[-44vw] left-1/2 -translate-x-1/2">
         {[92, 68, 44].map((v) => (
           <div
             key={v}
@@ -49,86 +49,116 @@ function RoadBackground() {
   );
 }
 
+/**
+ * Hero 1:1 s referencí: celá scéna je „připnutá" (sticky) po dobu 240vh
+ * scrollu. Malé video sedí V POPŘEDÍ uprostřed nadpisu a scrollem se plynule
+ * zvětšuje, dokud nezakryje úplně celý viewport — cílový scale se měří
+ * z reálné velikosti prvku, takže sedí na každém zařízení i po otočení
+ * displeje. Pak se scéna odpojí a odjede nahoru.
+ */
 export default function Hero() {
-  const ref = useRef<HTMLElement>(null);
+  const track = useRef<HTMLDivElement>(null);
+  const frame = useRef<HTMLDivElement>(null);
+  const [cover, setCover] = useState(6);
+
+  useEffect(() => {
+    const calc = () => {
+      const el = frame.current;
+      if (!el) return;
+      // offsetWidth/Height ignorují transform => čistá layout velikost
+      const w = el.offsetWidth || 1;
+      const h = el.offsetHeight || 1;
+      setCover(
+        Math.max(window.innerWidth / w, window.innerHeight / h) * 1.06
+      );
+    };
+    calc();
+    window.addEventListener("resize", calc);
+    window.addEventListener("orientationchange", calc);
+    return () => {
+      window.removeEventListener("resize", calc);
+      window.removeEventListener("orientationchange", calc);
+    };
+  }, []);
+
   const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start start", "end start"],
+    target: track,
+    offset: ["start start", "end end"],
   });
 
-  // „Portálový" zoom videa při scrollu — malé v centru, roste přes celý obraz.
-  const vScale = useTransform(scrollYProgress, [0, 1], [1, 2.7]);
-  const vY = useTransform(scrollYProgress, [0, 1], ["0%", "26%"]);
-  const vRadius = useTransform(scrollYProgress, [0, 1], [18, 0]);
-  const headFade = useTransform(scrollYProgress, [0, 0.55], [1, 0]);
-  const headY = useTransform(scrollYProgress, [0, 0.55], ["0%", "-30%"]);
+  const scale = useTransform(scrollYProgress, [0.06, 0.88], [1, cover]);
+  const radius = useTransform(scrollYProgress, [0.06, 0.55], [14, 0]);
+  const metaFade = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
 
   return (
-    <section
-      id="top"
-      ref={ref}
-      className="relative min-h-[150vh] overflow-hidden pt-[128px]"
-    >
-      <RoadBackground />
+    <section id="top" className="relative">
+      <div ref={track} className="relative h-[240vh]">
+        <div className="sticky top-0 flex h-screen flex-col items-center justify-center overflow-hidden">
+          <RoadBackground />
 
-      {/* Nadpisová vrstva — sticky, aby pod ní video „projelo" */}
-      <motion.div
-        style={{ opacity: headFade, y: headY }}
-        className="sticky top-[128px] z-[2] mx-auto flex max-w-[1320px] flex-col items-center px-5 text-center"
-      >
-        <motion.span
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, ease: EASE }}
-          className="mb-5 inline-block rounded-full border border-line bg-ink/40 px-4 py-1.5 text-[12px] uppercase tracking-[0.18em] text-paper"
-        >
-          Jsme
-        </motion.span>
-
-        <h1 className="font-display text-[clamp(64px,15vw,210px)] text-paper">
-          {["Kreativní", "Studio"].map((word, i) => (
-            <span key={word} className="block overflow-hidden">
+          {/* Nadpisová vrstva — video ji postupně překryje */}
+          <div className="relative z-10 flex flex-col items-center px-5 text-center">
+            <motion.div style={{ opacity: metaFade }}>
               <motion.span
-                className="block"
-                initial={{ y: "110%" }}
-                animate={{ y: 0 }}
-                transition={{ duration: 1, delay: 0.1 + i * 0.12, ease: EASE }}
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7, ease: EASE }}
+                className="mb-5 inline-block rounded-full border border-line bg-ink/40 px-4 py-1.5 text-[12px] uppercase tracking-[0.18em] text-paper"
               >
-                {word}
+                Jsme
               </motion.span>
-            </span>
-          ))}
-        </h1>
+            </motion.div>
 
-        <motion.p
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.5, ease: EASE }}
-          className="mt-6 text-[15px] text-paper"
-        >
-          Pro technologické značky
-        </motion.p>
-      </motion.div>
+            <h1 className="font-display text-[clamp(60px,14.5vw,200px)] text-paper">
+              {["Kreativní", "Studio"].map((word, i) => (
+                <span key={word} className="block overflow-hidden">
+                  <motion.span
+                    className="block"
+                    initial={{ y: "110%" }}
+                    animate={{ y: 0 }}
+                    transition={{ duration: 1, delay: 0.1 + i * 0.12, ease: EASE }}
+                  >
+                    {word}
+                  </motion.span>
+                </span>
+              ))}
+            </h1>
 
-      {/* Video, které se scrollem přiblíží */}
-      <div className="pointer-events-none sticky top-0 z-[1] -mt-[46vh] flex h-[56vh] items-center justify-center">
-        <motion.div
-          style={{ scale: vScale, y: vY, borderRadius: vRadius }}
-          className="aspect-video w-[min(340px,60vw)] overflow-hidden border border-line"
-        >
-          <video
-            src={MEDIA.heroVideo}
-            className="h-full w-full object-cover"
-            autoPlay
-            loop
-            muted
-            playsInline
-          />
-        </motion.div>
+            <motion.div style={{ opacity: metaFade }}>
+              <motion.p
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.5, ease: EASE }}
+                className="mt-6 text-[15px] text-paper"
+              >
+                Pro technologické značky
+              </motion.p>
+            </motion.div>
+          </div>
+
+          {/* Video V POPŘEDÍ — roste scrollem přes celou obrazovku */}
+          <div className="pointer-events-none absolute inset-0 z-20 grid place-items-center">
+            <motion.div
+              ref={frame}
+              style={{ scale, borderRadius: radius }}
+              className="aspect-video w-[min(64vw,300px)] transform-gpu overflow-hidden border border-line bg-ink md:w-[min(36vw,540px)]"
+            >
+              <video
+                src={MEDIA.heroVideo}
+                className="h-full w-full object-cover"
+                autoPlay
+                loop
+                muted
+                playsInline
+                preload="auto"
+              />
+            </motion.div>
+          </div>
+        </div>
       </div>
 
-      {/* Statistiky + popis — objeví se po odjetí videa */}
-      <div className="relative z-[3] mx-auto max-w-[1320px] px-5 pt-[36vh] pb-24">
+      {/* Statistiky + popis — nastoupí po odpojení scény */}
+      <div className="relative mx-auto max-w-[1320px] px-5 pb-24 pt-16 md:pt-24">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -145,9 +175,7 @@ export default function Hero() {
             ))}
           </div>
           <p className="max-w-[46ch] text-[15px] leading-relaxed text-mute">
-            <span className="text-paper">
-              Nevěříme na univerzální řešení.
-            </span>{" "}
+            <span className="text-paper">Nevěříme na univerzální řešení.</span>{" "}
             Každá značka má svůj příběh — naší prací je poskládat strategii,
             design a pohyb do jednoho srozumitelného systému.
           </p>

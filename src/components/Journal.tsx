@@ -1,4 +1,5 @@
 import Reveal from "./Reveal";
+import FrameReveal from "./FrameReveal";
 import { JOURNAL } from "../site";
 
 export default function Journal() {
@@ -22,9 +23,13 @@ export default function Journal() {
                 <img
                   src={post.img}
                   alt={post.title}
-                  className="h-full w-full object-cover transition-transform duration-[900ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.05]"
+                  width={846}
+                  height={1058}
+                  className="h-full w-full transform-gpu object-cover transition-transform duration-[900ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.05]"
                   loading="lazy"
+                  decoding="async"
                 />
+                <FrameReveal />
               </div>
               <div className="mt-5">
                 <div className="text-[13px] lowercase text-mute">

@@ -1,4 +1,5 @@
 import Reveal from "./Reveal";
+import FrameReveal from "./FrameReveal";
 import { PROJECTS, type Project } from "../site";
 
 /** Nadpis „featured / works" — dvě řádky velkých verzálek. */
@@ -78,10 +79,13 @@ function Card({ p }: { p: Project }) {
         <img
           src={p.img}
           alt={p.title}
-          className="h-full w-full object-cover transition-transform duration-[900ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.04]"
+          width={1200}
+          height={750}
+          className="h-full w-full transform-gpu object-cover transition-transform duration-[900ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.04]"
           loading="lazy"
+          decoding="async"
         />
-        <div className="absolute inset-0 bg-ink/0 transition-colors duration-500 group-hover:bg-ink/10" />
+        <FrameReveal />
       </div>
 
       <div className="mt-4 flex items-start justify-between">

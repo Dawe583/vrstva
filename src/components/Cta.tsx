@@ -45,7 +45,8 @@ export default function Cta() {
         </h2>
 
         <div className="relative my-6 flex flex-col items-center gap-6 md:my-8 md:flex-row">
-          <div className="h-[22vh] w-[min(300px,70vw)] overflow-hidden rounded-lg border border-line">
+          {/* Video se na hover roztáhne do výšky — stejně jako v předloze */}
+          <div className="h-[22vh] w-[min(300px,70vw)] overflow-hidden rounded-lg border border-line transition-[height] duration-[1100ms] ease-[cubic-bezier(0.16,1,0.3,1)] hover:h-[36vh]">
             <video
               src={MEDIA.ctaVideo}
               className="h-full w-full object-cover"
@@ -53,6 +54,7 @@ export default function Cta() {
               loop
               muted
               playsInline
+              preload="metadata"
             />
           </div>
           <a
