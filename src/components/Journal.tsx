@@ -20,13 +20,13 @@ export default function Journal() {
               onClick={(e) => e.preventDefault()}
               className="group block"
             >
-              <div className="relative aspect-[4/5] overflow-hidden rounded-xl border border-line">
+              <div className="relative aspect-[4/5] transform-gpu overflow-hidden rounded-xl border border-line [contain:paint]">
                 <img
                   src={local(post.img)}
                   alt={post.title}
                   width={768}
                   height={960}
-                  className="h-full w-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.05]"
+                  className="h-full w-full transform-gpu object-cover transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] [backface-visibility:hidden] group-hover:scale-[1.05]"
                   decoding="async"
                   loading="lazy"
                 />

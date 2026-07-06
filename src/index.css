@@ -84,10 +84,12 @@ body {
 .cw-col {
   transform: translateY(0);
   transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: transform;
 }
+/* will-change nastavíme JEN při hoveru — jinak by každé písmeno drželo
+   trvalou kompoziční vrstvu (stovky vrstev v sekci prací = zdroj lagu). */
 .group:hover .cw-col {
   transform: translateY(-50%);
+  will-change: transform;
 }
 
 /* ==== FAQ accordion ==== */

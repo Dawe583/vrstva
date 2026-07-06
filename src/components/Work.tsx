@@ -76,13 +76,13 @@ function Card({ p }: { p: Project }) {
         <span>{p.year}</span>
       </div>
 
-      <div className="relative aspect-[16/10] overflow-hidden rounded-xl border border-line">
+      <div className="relative aspect-[16/10] transform-gpu overflow-hidden rounded-xl border border-line [contain:paint]">
         <img
           src={local(p.img)}
           alt={p.title}
           width={768}
           height={480}
-          className="h-full w-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.04]"
+          className="h-full w-full transform-gpu object-cover transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] [backface-visibility:hidden] group-hover:scale-[1.04]"
           decoding="async"
           loading="lazy"
         />
