@@ -1,6 +1,7 @@
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
 import { MEDIA } from "../site";
+import { local, fallback } from "../media";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
@@ -48,7 +49,8 @@ export default function Cta() {
           {/* Video se na hover roztáhne do výšky — stejně jako v předloze */}
           <div className="h-[22vh] w-[min(300px,70vw)] overflow-hidden rounded-lg border border-line transition-[height] duration-[1100ms] ease-[cubic-bezier(0.16,1,0.3,1)] hover:h-[36vh]">
             <video
-              src={MEDIA.ctaVideo}
+              src={local(MEDIA.ctaVideo)}
+              onError={fallback(MEDIA.ctaVideo)}
               className="h-full w-full object-cover"
               autoPlay
               loop

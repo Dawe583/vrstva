@@ -1,7 +1,7 @@
 import Reveal from "./Reveal";
 import FrameReveal from "./FrameReveal";
 import { JOURNAL } from "../site";
-import { srcSetFor } from "../img";
+import { local, fallback } from "../media";
 
 export default function Journal() {
   return (
@@ -22,12 +22,11 @@ export default function Journal() {
             >
               <div className="relative aspect-[4/5] overflow-hidden rounded-xl border border-line">
                 <img
-                  src={post.img}
-                  srcSet={srcSetFor(post.img, [480, 768])}
-                  sizes="(min-width: 768px) 420px, 92vw"
+                  src={local(post.img)}
+                  onError={fallback(post.img)}
                   alt={post.title}
-                  width={846}
-                  height={1058}
+                  width={768}
+                  height={960}
                   className="h-full w-full transform-gpu object-cover transition-transform duration-[900ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.05]"
                   decoding="async"
                 />

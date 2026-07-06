@@ -2,6 +2,7 @@ import { useRef } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
 import Reveal from "./Reveal";
 import { SKILLS, type Skill } from "../site";
+import { local, fallback } from "../media";
 
 /** Jeden řádek dovednosti — slova se scrollem sjíždějí ke středu a mezi ně
  *  „vyroste" obrázek. Scrub v obou směrech, vrchol přesně uprostřed obrazovky. */
@@ -35,7 +36,8 @@ function Row({ skill }: { skill: Skill }) {
         className="h-[64px] w-[48px] shrink-0 overflow-hidden rounded-md md:h-[132px] md:w-[100px]"
       >
         <img
-          src={skill.img}
+          src={local(skill.img)}
+          onError={fallback(skill.img)}
           alt=""
           className="h-full w-full object-cover"
           decoding="async"

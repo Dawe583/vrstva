@@ -8,7 +8,6 @@ const VID = "https://framerusercontent.com/assets/";
 export const MEDIA = {
   heroVideo: `${VID}u2L9fMdGTUNkypRRe2obhvVYoo.mp4`,
   ctaVideo: `${VID}dXtBzmfad4Rec1Ho4fvtuYGuPzQ.mp4`,
-  testimonial: `${IMG}CvnUgsF4wSNCHF2JQoRDj2A1ads.jpg?width=2731&height=4096`,
 };
 
 export type Project = {
@@ -27,7 +26,7 @@ export const PROJECTS: Project[] = [
     year: "2026",
     brand: "Gentle Park",
     title: "Tričko Slims",
-    img: `${IMG}dEyd7hRzg4wgPG0RDXNDM1Moak.webp?width=1200&height=688`,
+    img: `${IMG}dEyd7hRzg4wgPG0RDXNDM1Moak.webp?width=768&height=440`,
   },
   {
     slug: "kryt-iphone",
@@ -35,7 +34,7 @@ export const PROJECTS: Project[] = [
     year: "2026",
     brand: "mobile elegant",
     title: "Kryt na iPhone",
-    img: `${IMG}YTLLiztyzNibPIlp3rdVwpGhRc.png?width=1376&height=768`,
+    img: `${IMG}YTLLiztyzNibPIlp3rdVwpGhRc.png?width=768&height=429`,
   },
   {
     slug: "only-the-brave",
@@ -43,7 +42,7 @@ export const PROJECTS: Project[] = [
     year: "2026",
     brand: "Lereve",
     title: "Only The Brave",
-    img: `${IMG}5Xl3vkxzIYkCslhhaUYSPzShNW0.webp?width=1200&height=688`,
+    img: `${IMG}5Xl3vkxzIYkCslhhaUYSPzShNW0.webp?width=768&height=440`,
   },
   {
     slug: "opalovaci-krem",
@@ -51,7 +50,7 @@ export const PROJECTS: Project[] = [
     year: "2026",
     brand: "syagi",
     title: "Opalovací krém",
-    img: `${IMG}bFAJHKDeaSouskKTyxrbM32z0.png?width=1200&height=1019`,
+    img: `${IMG}bFAJHKDeaSouskKTyxrbM32z0.png?width=768&height=652`,
   },
   {
     slug: "na-miru",
@@ -59,7 +58,7 @@ export const PROJECTS: Project[] = [
     year: "2026",
     brand: "matcha club",
     title: "Návrh na míru",
-    img: `${IMG}AylmkRt1aL0hFRrC4xB5Tvwsg.webp?width=1200&height=688`,
+    img: `${IMG}AylmkRt1aL0hFRrC4xB5Tvwsg.webp?width=768&height=440`,
   },
   {
     slug: "webdesign",
@@ -67,7 +66,7 @@ export const PROJECTS: Project[] = [
     year: "2026",
     brand: "orfolio",
     title: "Webdesign",
-    img: `${IMG}8pG5ifB43qSDxeq1VYhb3k6sgcA.png?width=1200&height=673`,
+    img: `${IMG}8pG5ifB43qSDxeq1VYhb3k6sgcA.png?width=768&height=431`,
   },
   {
     slug: "pletove-serum",
@@ -75,7 +74,7 @@ export const PROJECTS: Project[] = [
     year: "2026",
     brand: "Novili",
     title: "Pleťové sérum",
-    img: `${IMG}PA46gcLDDhOTxXBrPG24ffJvqY.webp?width=1200&height=688`,
+    img: `${IMG}PA46gcLDDhOTxXBrPG24ffJvqY.webp?width=768&height=440`,
   },
   {
     slug: "casual-kosile",
@@ -83,7 +82,7 @@ export const PROJECTS: Project[] = [
     year: "2026",
     brand: "easy fashion",
     title: "Casual košile",
-    img: `${IMG}ZnHx1XRtOSRzIuEbTUJr8QOkHI.webp?width=1200&height=688`,
+    img: `${IMG}ZnHx1XRtOSRzIuEbTUJr8QOkHI.webp?width=768&height=440`,
   },
 ];
 
@@ -179,19 +178,19 @@ export const JOURNAL: Post[] = [
     slug: "systemy-ne-loga",
     category: "branding //",
     title: "Proč silné značky stojí na systémech, ne na logu",
-    img: `${IMG}bNjaBzh6o5JZ2KBOPZTP06KkFM.png?width=1060&height=1058`,
+    img: `${IMG}bNjaBzh6o5JZ2KBOPZTP06KkFM.png?width=768&height=766`,
   },
   {
     slug: "motion-srozumitelnost",
     category: "motion // animace",
     title: "Jak motion design zlepšuje srozumitelnost produktu",
-    img: `${IMG}P6oFcbPOazBjjX0KwsXPEcxCjjc.png?width=846&height=1058`,
+    img: `${IMG}P6oFcbPOazBjjX0KwsXPEcxCjjc.png?width=768&height=960`,
   },
   {
     slug: "vize-k-realizaci",
     category: "marketing // strategie",
     title: "Od vize k realizaci: jak design sjednotí tým",
-    img: `${IMG}105xqT6vhMxzOfnrFGFsrt9MWag.png?width=790&height=1046`,
+    img: `${IMG}105xqT6vhMxzOfnrFGFsrt9MWag.png?width=768&height=1017`,
   },
 ];
 

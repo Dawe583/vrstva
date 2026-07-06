@@ -2,6 +2,7 @@ import { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import Reveal from "./Reveal";
 import { TESTIMONIALS } from "../site";
+import { local, fallback } from "../media";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
@@ -62,7 +63,8 @@ export default function Testimonials() {
                 <AnimatePresence mode="wait">
                   <motion.img
                     key={t.img}
-                    src={t.img}
+                    src={local(t.img)}
+                    onError={fallback(t.img)}
                     alt=""
                     decoding="async"
                     initial={{ opacity: 0, scale: 1.06 }}

@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { MotionConfig } from "motion/react";
 import { useLenis } from "./lenis";
 import { TESTIMONIALS } from "./site";
+import { local } from "./media";
 import Nav from "./components/Nav";
 import Hero from "./components/Hero";
 import Partners from "./components/Partners";
@@ -33,7 +34,7 @@ export default function App() {
     for (const t of TESTIMONIALS.slice(1)) {
       const img = new Image();
       img.decoding = "async";
-      img.src = t.img;
+      img.src = local(t.img);
     }
   }, []);
 

@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useInView } from "motion/react";
 import Reveal from "./Reveal";
 import { PARTNERS } from "../site";
+import { local, fallback } from "../media";
 
 /** Číslo, které se dopočítá při scrollu do viewportu. */
 function CountUp({ to, suffix }: { to: number; suffix: string }) {
@@ -50,7 +51,8 @@ export default function Partners() {
             className="rounded-2xl border border-line bg-ink p-7"
           >
             <img
-              src={p.logo}
+              src={local(p.logo)}
+              onError={fallback(p.logo)}
               alt={`${p.name} logo`}
               width={p.logoW}
               height={p.logoH}
