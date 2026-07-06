@@ -1,6 +1,7 @@
 import Reveal from "./Reveal";
 import FrameReveal from "./FrameReveal";
 import { JOURNAL } from "../site";
+import { srcSetFor } from "../img";
 
 export default function Journal() {
   return (
@@ -13,7 +14,7 @@ export default function Journal() {
 
       <div className="mt-16 grid gap-6 md:grid-cols-3">
         {JOURNAL.map((post, i) => (
-          <Reveal key={post.slug} delay={i * 0.08} amount={0.2}>
+          <Reveal key={post.slug} delay={i * 0.08} amount={0.2} className="cv-auto">
             <a
               href={`#journal`}
               onClick={(e) => e.preventDefault()}
@@ -22,6 +23,8 @@ export default function Journal() {
               <div className="relative aspect-[4/5] overflow-hidden rounded-xl border border-line">
                 <img
                   src={post.img}
+                  srcSet={srcSetFor(post.img, [480, 768])}
+                  sizes="(min-width: 768px) 420px, 92vw"
                   alt={post.title}
                   width={846}
                   height={1058}

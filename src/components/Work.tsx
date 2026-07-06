@@ -1,6 +1,7 @@
 import Reveal from "./Reveal";
 import FrameReveal from "./FrameReveal";
 import { PROJECTS, type Project } from "../site";
+import { srcSetFor } from "../img";
 
 /** Nadpis „featured / works" — dvě řádky velkých verzálek. */
 function Heading() {
@@ -78,11 +79,14 @@ function Card({ p }: { p: Project }) {
       <div className="relative aspect-[16/10] overflow-hidden rounded-xl border border-line">
         <img
           src={p.img}
+          srcSet={srcSetFor(p.img, [480, 768, 1200])}
+          sizes="(min-width: 768px) 640px, 92vw"
           alt={p.title}
           width={1200}
           height={750}
           className="h-full w-full transform-gpu object-cover transition-transform duration-[900ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.04]"
           decoding="async"
+          fetchPriority="high"
         />
         <FrameReveal />
       </div>
@@ -110,7 +114,7 @@ export default function Work() {
       <Heading />
       <div className="grid gap-x-6 gap-y-16 md:grid-cols-2">
         {PROJECTS.map((p) => (
-          <Reveal key={p.slug} amount={0.2}>
+          <Reveal key={p.slug} amount={0.2} className="cv-auto">
             <Card p={p} />
           </Reveal>
         ))}

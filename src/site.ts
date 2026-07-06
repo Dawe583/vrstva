@@ -125,13 +125,15 @@ export const PARTNERS: Partner[] = [
 
 export type Skill = { left: string; right: string; img: string };
 
+/* Miniatury se vykreslují max ~100×132 px => stačí width=280 (retina 2×),
+   místo původních 680–900 px. Řádově méně dat. */
 export const SKILLS: Skill[] = [
-  { left: "Kreativní", right: "Vedení", img: `${IMG}tPZAvYJYJ7Rm08ZyJ3kTzmG1gIg.png?width=900&height=900` },
-  { left: "UI/UX", right: "Design", img: `${IMG}vXdEBSjbjZWjn6CW8R7z9BVIUdc.png?width=680&height=900` },
-  { left: "Branding", right: "Strategie", img: `${IMG}aZo97IXqP4X0kS3P9MoYOEV3hCo.png?width=680&height=900` },
-  { left: "Video", right: "Střih", img: `${IMG}gmRo5dtINgQKt14iYv8SNpubVpc.png?width=680&height=900` },
-  { left: "Motion", right: "Design", img: `${IMG}oc7ObmaWyBI5sgBFIo7Xnp9oGCQ.png?width=720&height=900` },
-  { left: "Digitální", right: "Marketing", img: `${IMG}SvB4Wd4za9gsOb6K5UiL4Tv94.png?width=680&height=900` },
+  { left: "Kreativní", right: "Vedení", img: `${IMG}tPZAvYJYJ7Rm08ZyJ3kTzmG1gIg.png?width=280&height=280` },
+  { left: "UI/UX", right: "Design", img: `${IMG}vXdEBSjbjZWjn6CW8R7z9BVIUdc.png?width=280&height=371` },
+  { left: "Branding", right: "Strategie", img: `${IMG}aZo97IXqP4X0kS3P9MoYOEV3hCo.png?width=280&height=371` },
+  { left: "Video", right: "Střih", img: `${IMG}gmRo5dtINgQKt14iYv8SNpubVpc.png?width=280&height=371` },
+  { left: "Motion", right: "Design", img: `${IMG}oc7ObmaWyBI5sgBFIo7Xnp9oGCQ.png?width=280&height=350` },
+  { left: "Digitální", right: "Marketing", img: `${IMG}SvB4Wd4za9gsOb6K5UiL4Tv94.png?width=280&height=371` },
 ];
 
 export type Testimonial = {
@@ -147,21 +149,21 @@ export const TESTIMONIALS: Testimonial[] = [
       "Vrstva nám přestavěla celý příběh produktu od základu. Co dřív působilo genericky, je teď nezaměnitelně naše — a čísla se hnula spolu s tím.",
     name: "Adam Kolář",
     role: "Produktový ředitel, SaaS firma",
-    img: `${IMG}CvnUgsF4wSNCHF2JQoRDj2A1ads.jpg?width=1400&height=2100`,
+    img: `${IMG}CvnUgsF4wSNCHF2JQoRDj2A1ads.jpg?width=800&height=1200`,
   },
   {
     quote:
       "Tým rozumí pohybu. Každá interakce má svůj smysl a nic nepůsobí nalepeně. Náš launch vypadal jako událost, ne jen jako další stránka.",
     name: "Karel Dohnal",
     role: "Zakladatel, fintech startup",
-    img: `${IMG}tPZAvYJYJ7Rm08ZyJ3kTzmG1gIg.png?width=1200&height=1200`,
+    img: `${IMG}tPZAvYJYJ7Rm08ZyJ3kTzmG1gIg.png?width=800&height=800`,
   },
   {
     quote:
       "Rychlé, ostré a opravdu strategické. Vrstva pracovala s naší značkou jako se systémem, ne jako s logem — a je to vidět na každé obrazovce.",
     name: "Lucie Marešová",
     role: "Marketingová ředitelka, e-shop",
-    img: `${IMG}aZo97IXqP4X0kS3P9MoYOEV3hCo.png?width=911&height=1199`,
+    img: `${IMG}aZo97IXqP4X0kS3P9MoYOEV3hCo.png?width=800&height=1053`,
   },
 ];
 
