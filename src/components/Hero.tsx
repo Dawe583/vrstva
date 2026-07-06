@@ -89,6 +89,9 @@ export default function Hero() {
   const scale = useTransform(scrollYProgress, [0.06, 0.88], [1, cover]);
   const radius = useTransform(scrollYProgress, [0.06, 0.55], [14, 0]);
   const metaFade = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
+  // Nadpis zůstává PŘED videem (jako v předloze) a vytratí se až ke konci
+  // zoomu, aby finální záběr byl čistě video přes celou obrazovku.
+  const headFade = useTransform(scrollYProgress, [0.5, 0.75], [1, 0]);
 
   return (
     <section id="top" className="relative">
@@ -96,8 +99,11 @@ export default function Hero() {
         <div className="sticky top-0 flex h-screen flex-col items-center justify-center overflow-hidden">
           <RoadBackground />
 
-          {/* Nadpisová vrstva — video ji postupně překryje */}
-          <div className="relative z-10 flex flex-col items-center px-5 text-center">
+          {/* Nadpisová vrstva — je NAD videem, text přes něj zůstává čitelný */}
+          <motion.div
+            style={{ opacity: headFade }}
+            className="relative z-10 flex flex-col items-center px-5 text-center"
+          >
             <motion.div style={{ opacity: metaFade }}>
               <motion.span
                 initial={{ opacity: 0, y: 16 }}
@@ -134,10 +140,10 @@ export default function Hero() {
                 Pro technologické značky
               </motion.p>
             </motion.div>
-          </div>
+          </motion.div>
 
-          {/* Video V POPŘEDÍ — roste scrollem přes celou obrazovku */}
-          <div className="pointer-events-none absolute inset-0 z-20 grid place-items-center">
+          {/* Video ZA textem — roste scrollem, přes celou obrazovku na konci */}
+          <div className="pointer-events-none absolute inset-0 z-[5] grid place-items-center">
             <motion.div
               ref={frame}
               style={{ scale, borderRadius: radius }}
