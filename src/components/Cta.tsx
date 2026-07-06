@@ -41,7 +41,7 @@ export default function Cta() {
           />
         ))}
 
-        <h2 className="relative font-display text-[clamp(56px,13vw,180px)] leading-[0.9] text-paper">
+        <h2 className="relative font-display text-[clamp(56px,13vw,180px)] leading-[1.08] text-paper">
           Pojďme
         </h2>
 
@@ -72,7 +72,7 @@ export default function Cta() {
           </a>
         </div>
 
-        <h2 className="relative font-display text-[clamp(56px,13vw,180px)] leading-[0.9] text-paper">
+        <h2 className="relative font-display text-[clamp(56px,13vw,180px)] leading-[1.08] text-paper">
           spolupracovat
         </h2>
       </motion.div>

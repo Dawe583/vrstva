@@ -37,7 +37,7 @@ export default function Partners() {
   return (
     <section className="mx-auto max-w-[1320px] px-5 py-24 md:py-32">
       <Reveal>
-        <h2 className="max-w-[20ch] font-display text-[clamp(30px,4vw,54px)] leading-[1.05] text-paper">
+        <h2 className="max-w-[20ch] font-display text-[clamp(30px,4vw,54px)] leading-[1.2] text-paper">
           Spolupracujeme se startupy a technologickými týmy, které utvářejí
           budoucnost.
         </h2>

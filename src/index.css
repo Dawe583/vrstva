@@ -39,12 +39,14 @@ body {
   color: #fff;
 }
 
-/* Oswald nadpisy — kondenzované, verzálky, sevřený leading */
+/* Oswald nadpisy — kondenzované, verzálky. Řádkování 1.08, aby se česká
+   diakritika (Ě, Í, Ř, Á, Ý, Ů…) nad verzálkami neořezávala ani
+   nepřekrývala s řádkem nad sebou. */
 .font-display {
   font-family: var(--font-display);
   font-weight: 500;
   text-transform: uppercase;
-  line-height: 0.92;
+  line-height: 1.08;
   letter-spacing: -0.01em;
 }
 
@@ -75,23 +77,6 @@ body {
 }
 
 /* ==== Reveal na hover — maska pro písmena (featured works / journal) ==== */
-.cw-mask {
-  display: inline-block;
-  overflow: hidden;
-  vertical-align: top;
-  white-space: pre;
-}
-.cw-col {
-  transform: translateY(0);
-  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-}
-/* will-change nastavíme JEN při hoveru — jinak by každé písmeno drželo
-   trvalou kompoziční vrstvu (stovky vrstev v sekci prací = zdroj lagu). */
-.group:hover .cw-col {
-  transform: translateY(-50%);
-  will-change: transform;
-}
-
 /* ==== FAQ accordion ==== */
 .acc-panel {
   display: grid;

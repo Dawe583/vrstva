@@ -132,7 +132,7 @@ export default function Hero() {
               </motion.span>
             </motion.div>
 
-            <h1 className="font-display text-[clamp(60px,14.5vw,200px)] text-paper">
+            <h1 className="font-display text-[clamp(60px,14.5vw,200px)] leading-[1.12] text-paper">
               {["Kreativní", "Studio"].map((word, i) => (
                 <span key={word} className="block overflow-hidden">
                   <motion.span

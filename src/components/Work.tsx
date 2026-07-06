@@ -3,13 +3,13 @@ import FrameReveal from "./FrameReveal";
 import { PROJECTS, type Project } from "../site";
 import { local } from "../media";
 
-/** Nadpis „featured / works" — dvě řádky velkých verzálek. */
+/** Nadpis „vybrané / práce" — dvě řádky velkých verzálek. */
 function Heading() {
   return (
     <div className="mb-14 md:mb-20">
       {["vybrané", "práce"].map((w, i) => (
         <Reveal key={w} delay={i * 0.08}>
-          <h2 className="font-display text-[clamp(56px,13vw,180px)] leading-[0.9] text-paper">
+          <h2 className="font-display text-[clamp(56px,13vw,180px)] leading-[1.02] text-paper">
             {w}
           </h2>
         </Reveal>
@@ -18,31 +18,13 @@ function Heading() {
   );
 }
 
-/** Text s reveal písmen na hover (dvě zrcadlené kopie ve svislé masce). */
-function LetterReveal({ text, className }: { text: string; className?: string }) {
-  return (
-    <span className={className} aria-label={text}>
-      {[...text].map((ch, i) => (
-        <span key={i} className="cw-mask h-[1.1em] leading-[1.1em]" aria-hidden>
-          <span
-            className="cw-col flex flex-col"
-            style={{ transitionDelay: `${i * 16}ms` }}
-          >
-            <span>{ch === " " ? " " : ch}</span>
-            <span>{ch === " " ? " " : ch}</span>
-          </span>
-        </span>
-      ))}
-    </span>
-  );
-}
-
+/** Šipka ↗ — jeden lehký transform na hover (dvě malé SVG ve výřezu). */
 function Arrow() {
   return (
-    <span className="relative block h-5 w-5 overflow-hidden">
+    <span className="relative mt-1 block h-5 w-5 shrink-0 overflow-hidden">
       <svg
         viewBox="0 0 21 21"
-        className="absolute inset-0 h-5 w-5 translate-x-0 translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:-translate-y-full group-hover:translate-x-full"
+        className="absolute inset-0 h-5 w-5 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:-translate-y-full group-hover:translate-x-full"
         fill="none"
       >
         <path
@@ -66,11 +48,7 @@ function Arrow() {
 
 function Card({ p }: { p: Project }) {
   return (
-    <a
-      href={`#work`}
-      className="group block"
-      onClick={(e) => e.preventDefault()}
-    >
+    <a href="#work" className="group block" onClick={(e) => e.preventDefault()}>
       <div className="mb-4 flex items-center justify-between text-[13px] text-mute">
         <span className="lowercase">{p.category}</span>
         <span>{p.year}</span>
@@ -89,16 +67,14 @@ function Card({ p }: { p: Project }) {
         <FrameReveal />
       </div>
 
-      <div className="mt-4 flex items-start justify-between">
-        <div>
-          <LetterReveal
-            text={p.brand}
-            className="flex text-[13px] lowercase text-mute2"
-          />
-          <LetterReveal
-            text={p.title}
-            className="mt-1 flex font-display text-[22px] text-paper"
-          />
+      {/* Lehký hover efekt: celý text se posune o kousek doprava (jeden
+          transform) a název zezlátne. Žádné per-písmenkové vrstvy. */}
+      <div className="mt-4 flex items-start justify-between gap-4">
+        <div className="transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-1.5">
+          <p className="text-[13px] lowercase text-mute2">{p.brand}</p>
+          <h3 className="mt-1 font-display text-[22px] leading-tight text-paper transition-colors duration-300 group-hover:text-accent">
+            {p.title}
+          </h3>
         </div>
         <Arrow />
       </div>

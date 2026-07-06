@@ -67,7 +67,7 @@ export default function Footer() {
 
         {/* velký wordmark */}
         <div className="mt-16 border-t border-line pt-8">
-          <div className="font-display text-[clamp(60px,18vw,240px)] leading-[0.85] text-line">
+          <div className="font-display text-[clamp(60px,18vw,240px)] leading-[0.95] text-line">
             vrstva
           </div>
         </div>
