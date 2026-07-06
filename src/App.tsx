@@ -13,9 +13,11 @@ import TechMarquee from "./components/TechMarquee";
 import Stats from "./components/Stats";
 import Work from "./components/Work";
 import Process from "./components/Process";
+import Playground from "./components/Playground";
 import Team from "./components/Team";
 import Pricing from "./components/Pricing";
 import Testimonials from "./components/Testimonials";
+import Awards from "./components/Awards";
 import Journal from "./components/Journal";
 import Faq from "./components/Faq";
 import Contact from "./components/Contact";
@@ -56,9 +58,11 @@ export default function App() {
         <Stats />
         <Work />
         <Process />
+        <Playground />
         <Team />
         <Pricing />
         <Testimonials />
+        <Awards />
         <Journal />
         <Faq />
         <Contact />
