@@ -6,6 +6,7 @@ const LINKS = [
   { label: "Studio", id: "#studio" },
   { label: "Služby", id: "#sluzby" },
   { label: "Práce", id: "#prace" },
+  { label: "Ceník", id: "#cenik" },
   { label: "Kontakt", id: "#kontakt" },
 ];
 

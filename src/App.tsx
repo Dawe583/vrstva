@@ -9,10 +9,14 @@ import Hero from "./components/Hero";
 import Marquee from "./components/Marquee";
 import About from "./components/About";
 import Services from "./components/Services";
+import TechMarquee from "./components/TechMarquee";
 import Stats from "./components/Stats";
 import Work from "./components/Work";
 import Process from "./components/Process";
+import Team from "./components/Team";
+import Pricing from "./components/Pricing";
 import Testimonials from "./components/Testimonials";
+import Journal from "./components/Journal";
 import Faq from "./components/Faq";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
@@ -48,10 +52,14 @@ export default function App() {
         <Marquee />
         <About />
         <Services />
+        <TechMarquee />
         <Stats />
         <Work />
         <Process />
+        <Team />
+        <Pricing />
         <Testimonials />
+        <Journal />
         <Faq />
         <Contact />
       </main>

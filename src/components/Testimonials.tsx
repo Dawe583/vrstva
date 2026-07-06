@@ -1,38 +1,78 @@
-import Reveal from "./Reveal";
+import { IconStarFilled, IconQuote } from "@tabler/icons-react";
+import SplitText from "./SplitText";
+import Img from "./Img";
+import { IMAGES } from "../images";
 
 const QUOTES = [
   {
-    text: "„Nový web nám během tří měsíců zdvojnásobil počet poptávek. Spolupráce byla přesná a rychlá.“",
+    text: "Nový web nám během tří měsíců zdvojnásobil počet poptávek. Spolupráce byla přesná a rychlá.",
     name: "Tereza Vlachová",
-    role: "marketingová ředitelka, Bystrá",
+    role: "Marketingová ředitelka, Bystrá",
+    pic: IMAGES.team[1],
   },
   {
-    text: "„Konečně web, který vypadá jako my. Vrstva pochopila naši značku dřív než my sami.“",
+    text: "Konečně web, který vypadá jako my. Vrstva pochopila naši značku dřív než my sami.",
     name: "Ondřej Roubal",
-    role: "majitel, Roubal a syn",
+    role: "Majitel, Roubal a syn",
+    pic: IMAGES.team[0],
+  },
+  {
+    text: "Rezervace nám vzlétly. A hlavně — hosté píšou, že web je zážitek sám o sobě.",
+    name: "Petra Malá",
+    role: "Provozní, hotel Mezanin",
+    pic: IMAGES.team[3],
+  },
+  {
+    text: "Rychlost, detail a nula výmluv. Přesně tým, se kterým chcete stavět značku.",
+    name: "Jan Kotek",
+    role: "Zakladatel, Atelier HM",
+    pic: IMAGES.team[2],
   },
 ];
 
-export default function Testimonials() {
+function Card({ q }: { q: (typeof QUOTES)[number] }) {
   return (
-    <section className="border-y border-line">
-      <div className="mx-auto grid max-w-[1400px] grid-cols-1 md:grid-cols-2">
-        {QUOTES.map((q, i) => (
-          <Reveal
-            key={q.name}
-            delay={i * 0.08}
-            className={`px-6 py-16 md:px-14 md:py-24 ${i === 1 ? "border-t border-line md:border-l md:border-t-0" : ""}`}
-          >
-            <blockquote className="font-display text-2xl font-medium leading-snug tracking-tight md:text-3xl">
-              {q.text}
-            </blockquote>
-            <footer className="mt-8 text-sm text-mute">
-              <span className="text-paper">{q.name}</span>
-              <br />
-              {q.role}
-            </footer>
-          </Reveal>
-        ))}
+    <figure className="mx-3 flex w-[85vw] shrink-0 flex-col justify-between rounded-2xl border border-line bg-ink2/50 p-7 sm:w-[440px] md:p-8">
+      <div>
+        <IconQuote size={30} stroke={1.4} className="mb-4 text-accent" />
+        <div className="mb-4 flex gap-1">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <IconStarFilled key={i} size={15} className="text-accent" />
+          ))}
+        </div>
+        <blockquote className="font-display text-xl font-medium leading-snug tracking-tight md:text-2xl">
+          „{q.text}"
+        </blockquote>
+      </div>
+      <figcaption className="mt-8 flex items-center gap-3">
+        <Img pic={q.pic} className="h-11 w-11 rounded-full" imgClassName="grayscale" />
+        <div className="text-sm">
+          <div className="text-paper">{q.name}</div>
+          <div className="text-mute">{q.role}</div>
+        </div>
+      </figcaption>
+    </figure>
+  );
+}
+
+/** Reference jako živý pás karet (auto-scroll, pauza na hover). */
+export default function Testimonials() {
+  const row = [...QUOTES, ...QUOTES];
+  return (
+    <section aria-label="Reference" className="overflow-hidden border-y border-line py-20 md:py-28">
+      <div className="mx-auto mb-12 max-w-[1400px] px-6 md:px-10">
+        <span className="text-sm uppercase tracking-[0.16em] text-accent">Reference</span>
+        <SplitText
+          text="Co říkají klienti."
+          className="mt-4 font-display text-4xl font-medium tracking-tighter md:text-6xl"
+        />
+      </div>
+      <div className="group flex overflow-hidden">
+        <div className="marquee-track flex w-max [animation-duration:40s] group-hover:[animation-play-state:paused]">
+          {row.map((q, i) => (
+            <Card key={i} q={q} />
+          ))}
+        </div>
       </div>
     </section>
   );

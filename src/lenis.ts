@@ -35,3 +35,14 @@ export function scrollToId(id: string) {
   if (lenis) lenis.scrollTo(id, { duration: 1.4 });
   else document.querySelector(id)?.scrollIntoView();
 }
+
+/** Zamkne/odemkne stránkový scroll (pro overlaye, např. case study). */
+export function lockScroll(lock: boolean) {
+  if (lock) {
+    lenis?.stop();
+    document.body.style.overflow = "hidden";
+  } else {
+    lenis?.start();
+    document.body.style.overflow = "";
+  }
+}
