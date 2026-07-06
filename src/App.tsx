@@ -2,6 +2,7 @@ import { useState } from "react";
 import { AnimatePresence, MotionConfig } from "motion/react";
 import { useLenis } from "./lenis";
 import LiveBackground from "./components/LiveBackground";
+import CustomCursor from "./components/CustomCursor";
 import Preloader from "./components/Preloader";
 import Nav from "./components/Nav";
 import Hero from "./components/Hero";
@@ -28,6 +29,7 @@ export default function App() {
   return (
     <MotionConfig reducedMotion="never">
       <LiveBackground />
+      <CustomCursor />
 
       <AnimatePresence>
         {loading && <Preloader onDone={() => setLoading(false)} />}

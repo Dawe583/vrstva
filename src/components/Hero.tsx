@@ -3,14 +3,15 @@ import {
   motion,
   useScroll,
   useTransform,
-  useMotionValue,
-  useSpring,
   AnimatePresence,
 } from "motion/react";
-import { ArrowDownRight } from "@phosphor-icons/react";
+import { IconArrowDownRight } from "@tabler/icons-react";
 import MagneticButton from "./MagneticButton";
+import HeroCanvas from "./HeroCanvas";
+import Img from "./Img";
 import { scrollToId } from "../lenis";
 import { EASE, amp } from "../motion";
+import { IMAGES } from "../images";
 
 const ROTATING = ["pamatují.", "vydělávají.", "odliší.", "posunou dál."];
 
@@ -29,23 +30,36 @@ function Line({ text, delay, ready }: { text: string; delay: number; ready: bool
   );
 }
 
+/** Živé pražské hodiny (HH:MM:SS). */
+function Clock() {
+  const [t, setT] = useState("");
+  useEffect(() => {
+    const fmt = () =>
+      new Intl.DateTimeFormat("cs-CZ", {
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        timeZone: "Europe/Prague",
+      }).format(new Date());
+    setT(fmt());
+    const i = setInterval(() => setT(fmt()), 1000);
+    return () => clearInterval(i);
+  }, []);
+  return (
+    <span className="tabular-nums">
+      {t} <span className="text-mute">Praha</span>
+    </span>
+  );
+}
+
 export default function Hero({ ready }: { ready: boolean }) {
   const ref = useRef<HTMLElement>(null);
   const [idx, setIdx] = useState(0);
 
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
   const imgY = useTransform(scrollYProgress, [0, 1], ["0%", `${amp(18)}%`]);
-  const fade = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
-
-  // cursor glow nad heroem
-  const gx = useMotionValue(50);
-  const gy = useMotionValue(50);
-  const sgx = useSpring(gx, { stiffness: 80, damping: 20 });
-  const sgy = useSpring(gy, { stiffness: 80, damping: 20 });
-  const glow = useTransform(
-    [sgx, sgy],
-    ([x, y]) => `radial-gradient(500px circle at ${x}% ${y}%, rgb(232 86 42 / 0.10), transparent 70%)`
-  );
+  const fade = useTransform(scrollYProgress, [0, 0.85], [1, 0]);
+  const canvasY = useTransform(scrollYProgress, [0, 1], ["0%", "12%"]);
 
   useEffect(() => {
     if (!ready) return;
@@ -54,22 +68,38 @@ export default function Hero({ ready }: { ready: boolean }) {
   }, [ready]);
 
   return (
-    <section
-      id="uvod"
-      ref={ref}
-      onPointerMove={(e) => {
-        if (e.pointerType !== "mouse") return;
-        gx.set((e.clientX / window.innerWidth) * 100);
-        gy.set((e.clientY / window.innerHeight) * 100);
-      }}
-      className="relative min-h-[100dvh] overflow-hidden"
-    >
-      <motion.div aria-hidden style={{ background: glow }} className="pointer-events-none absolute inset-0" />
+    <section id="uvod" ref={ref} className="relative min-h-[100dvh] overflow-hidden">
+      {/* živé WebGL pozadí */}
+      <motion.div style={{ y: canvasY, opacity: fade }} className="absolute inset-0">
+        <HeroCanvas />
+        <div className="absolute inset-0 bg-gradient-to-b from-ink/40 via-transparent to-ink" />
+      </motion.div>
 
       <motion.div
         style={{ opacity: fade }}
-        className="mx-auto grid max-w-[1400px] grid-cols-1 gap-10 px-6 pt-24 md:grid-cols-12 md:px-10"
+        className="relative mx-auto grid max-w-[1400px] grid-cols-1 gap-10 px-6 pt-28 md:grid-cols-12 md:px-10 md:pt-32"
       >
+        {/* horní meta lišta */}
+        <div className="md:col-span-12">
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={ready ? { opacity: 1, y: 0 } : undefined}
+            transition={{ duration: 0.7, ease: EASE }}
+            className="mb-8 flex flex-wrap items-center justify-between gap-4 text-[13px] text-paper/80"
+          >
+            <span className="inline-flex items-center gap-2.5 rounded-full border border-line bg-ink/30 px-3.5 py-1.5 backdrop-blur">
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-75" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-accent" />
+              </span>
+              Přijímáme projekty na Q4 2026
+            </span>
+            <span className="hidden md:inline">
+              <Clock />
+            </span>
+          </motion.div>
+        </div>
+
         <div className="md:col-span-12">
           <h1 className="font-display text-[13vw] font-medium leading-[0.95] tracking-tighter md:text-[7.5vw]">
             <Line text="Weby, které si" delay={0.1} ready={ready} />
@@ -108,7 +138,7 @@ export default function Hero({ ready }: { ready: boolean }) {
           animate={ready ? { opacity: 1, y: 0 } : undefined}
           transition={{ duration: 0.8, delay: 0.5, ease: EASE }}
         >
-          <p className="max-w-[42ch] text-base leading-relaxed text-mute md:text-lg">
+          <p className="max-w-[42ch] text-base leading-relaxed text-muteb md:text-lg">
             Prémiové studio pro značky, které chtějí víc než šablonu.
             Strategie, design a vývoj pod jednou střechou.
           </p>
@@ -124,25 +154,39 @@ export default function Hero({ ready }: { ready: boolean }) {
               className="flex items-center gap-2 rounded-full border border-line px-7 py-3.5 text-sm text-paper transition-colors hover:border-paper/40"
             >
               Prohlédnout práce
-              <ArrowDownRight size={16} weight="bold" />
+              <IconArrowDownRight size={16} stroke={2} />
             </MagneticButton>
           </div>
         </motion.div>
 
         <motion.div
-          className="order-1 overflow-hidden md:order-2 md:col-span-6 md:col-start-7"
+          className="order-1 md:order-2 md:col-span-6 md:col-start-7"
+          data-cursor="view"
           initial={{ clipPath: "inset(100% 0 0 0)" }}
           animate={ready ? { clipPath: "inset(0% 0 0 0)" } : undefined}
           transition={{ duration: 1.1, delay: 0.45, ease: EASE }}
         >
-          <motion.img
-            src="https://picsum.photos/seed/vrstva-studio-hero/1400/1000"
-            alt="Ukázka práce studia Vrstva"
-            style={{ y: imgY }}
-            className="aspect-[14/10] w-full scale-110 object-cover grayscale-[0.3]"
-            loading="eager"
-          />
+          <motion.div style={{ y: imgY }} className="overflow-hidden">
+            <Img
+              pic={IMAGES.hero}
+              eager
+              className="aspect-[14/10] w-full"
+              imgClassName="grayscale-[0.25] scale-105"
+            />
+          </motion.div>
         </motion.div>
+      </motion.div>
+
+      {/* scroll indikátor */}
+      <motion.div
+        style={{ opacity: fade }}
+        initial={{ opacity: 0 }}
+        animate={ready ? { opacity: 1 } : undefined}
+        transition={{ delay: 1.1, duration: 1 }}
+        className="absolute bottom-7 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-3 text-[11px] uppercase tracking-[0.2em] text-mute md:flex"
+      >
+        Scrolluj
+        <span className="h-9 w-px origin-top animate-[sd_1.8s_ease-in-out_infinite] bg-gradient-to-b from-accent to-transparent" />
       </motion.div>
     </section>
   );
