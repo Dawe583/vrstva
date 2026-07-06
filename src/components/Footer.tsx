@@ -11,10 +11,10 @@ import { scrollToId } from "../lenis";
 
 const WORD = "VRSTVA".split("");
 const SOCIAL = [
-  { icon: IconBrandInstagram, label: "Instagram" },
-  { icon: IconBrandBehance, label: "Behance" },
-  { icon: IconBrandDribbble, label: "Dribbble" },
-  { icon: IconBrandLinkedin, label: "LinkedIn" },
+  { icon: IconBrandInstagram, label: "Instagram", href: "https://instagram.com" },
+  { icon: IconBrandBehance, label: "Behance", href: "https://behance.net" },
+  { icon: IconBrandDribbble, label: "Dribbble", href: "https://dribbble.com" },
+  { icon: IconBrandLinkedin, label: "LinkedIn", href: "https://linkedin.com" },
 ];
 
 /** Živý pražský čas HH:MM. */
@@ -82,7 +82,9 @@ export default function Footer() {
             {SOCIAL.map((s) => (
               <a
                 key={s.label}
-                href="#"
+                href={s.href}
+                target="_blank"
+                rel="noopener noreferrer"
                 aria-label={s.label}
                 data-cursor="hover"
                 className="rounded-full border border-line p-2.5 text-paper/60 transition-colors hover:border-accent/50 hover:text-accent"
@@ -102,8 +104,8 @@ export default function Footer() {
         <div className="flex flex-col gap-3 border-t border-line py-5 text-xs text-mute sm:flex-row sm:items-center sm:justify-between">
           <span>© 2026 Vrstva studio · Weby, které si lidé pamatují</span>
           <span className="flex gap-5">
-            <a href="#" className="transition-colors hover:text-paper" data-cursor="hover">Zásady soukromí</a>
-            <a href="#" className="transition-colors hover:text-paper" data-cursor="hover">Cookies</a>
+            <a href="mailto:hello@vrstva.studio?subject=Zásady%20soukromí" className="transition-colors hover:text-paper" data-cursor="hover">Zásady soukromí</a>
+            <a href="mailto:hello@vrstva.studio?subject=Cookies" className="transition-colors hover:text-paper" data-cursor="hover">Cookies</a>
           </span>
         </div>
 

@@ -126,6 +126,47 @@ body {
   }
 }
 
+/* ===== Mesh dlaždice (animované náhrady fotek) ===== */
+@keyframes mt-drift1 {
+  from { transform: translate(-50%, -50%) translate3d(0, 0, 0) scale(1); }
+  to   { transform: translate(-50%, -50%) translate3d(14%, -10%, 0) scale(1.25); }
+}
+@keyframes mt-drift2 {
+  from { transform: translate(-50%, -50%) translate3d(0, 0, 0) scale(1.1); }
+  to   { transform: translate(-50%, -50%) translate3d(-12%, 12%, 0) scale(0.9); }
+}
+@keyframes mt-drift3 {
+  from { transform: translate(-50%, -50%) translate3d(0, 0, 0) scale(0.95); }
+  to   { transform: translate(-50%, -50%) translate3d(10%, 14%, 0) scale(1.2); }
+}
+@keyframes mt-pulse {
+  0%, 100% { transform: scale(1); opacity: 0.5; }
+  50%      { transform: scale(1.06); opacity: 0.9; }
+}
+@keyframes mt-slide {
+  from { transform: translate(0, 0); }
+  to   { transform: translate(-25px, -25px); }
+}
+@keyframes mt-wave {
+  0%, 100% { transform: translateY(var(--wy, 0)) scaleY(1); }
+  50%      { transform: translateY(calc(var(--wy, 0px) - 8px)) scaleY(1.15); }
+}
+@keyframes mt-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Přístupnost: kdo si přeje méně pohybu, dostane klid i u inline animací
+   (mesh dlaždice, motivy) — !important přebije i inline animation. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
 /* ===== Vlastní kurzor ===== */
 /* Nativní kurzor skryjeme jen když je aktivní vlastní (třída na <html>) a jde o myš */
 @media (pointer: fine) {
@@ -143,23 +184,23 @@ body {
   pointer-events: none;
   border-radius: 999px;
   will-change: transform;
-  mix-blend-mode: difference;
 }
 .cursor-dot {
   width: 7px;
   height: 7px;
   margin: -3.5px 0 0 -3.5px;
   background: var(--color-paper);
+  box-shadow: 0 0 0 1px rgb(13 13 14 / 0.35);
 }
 .cursor-ring {
   width: 42px;
   height: 42px;
   margin: -21px 0 0 -21px;
-  border: 1px solid var(--color-paper);
+  border: 1.5px solid rgb(242 241 236 / 0.75);
   transition: width 0.32s cubic-bezier(0.16, 1, 0.3, 1),
     height 0.32s cubic-bezier(0.16, 1, 0.3, 1),
     margin 0.32s cubic-bezier(0.16, 1, 0.3, 1),
-    background 0.32s, opacity 0.32s;
+    background 0.32s, border-color 0.32s, opacity 0.32s;
 }
 .cursor-ring .cur-label {
   position: absolute;

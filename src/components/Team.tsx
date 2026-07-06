@@ -1,6 +1,7 @@
 import Reveal from "./Reveal";
 import SplitText from "./SplitText";
-import Img from "./Img";
+import MeshTile from "./MeshTile";
+import Avatar from "./Avatar";
 import { TEAM } from "../content";
 
 /** Tým: portréty s hover odhalením (grayscale→barva, jméno vyjede). */
@@ -26,14 +27,21 @@ export default function Team() {
         <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
           {TEAM.map((m, i) => (
             <Reveal key={m.name} delay={i * 0.06}>
-              <div data-cursor="view" className="group">
+              <div data-cursor="hover" className="group">
                 <div className="relative overflow-hidden rounded-xl">
-                  <Img
-                    pic={m.pic}
-                    className="aspect-[4/5] w-full"
-                    imgClassName="grayscale transition-all duration-[900ms] ease-out group-hover:scale-105 group-hover:grayscale-0"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-ink/70 via-transparent to-transparent opacity-70 transition-opacity duration-500 group-hover:opacity-90" />
+                  <MeshTile
+                    seed={m.seed}
+                    motif="rings"
+                    className="aspect-[4/5] w-full transition-transform duration-[900ms] ease-out group-hover:scale-105"
+                  >
+                    <div className="absolute inset-0 grid place-items-center">
+                      <Avatar
+                        name={m.name}
+                        seed={m.seed}
+                        className="h-24 w-24 text-3xl shadow-lg shadow-ink/40 transition-transform duration-500 group-hover:scale-110 md:h-28 md:w-28"
+                      />
+                    </div>
+                  </MeshTile>
                   <div className="absolute inset-x-0 bottom-0 translate-y-2 p-4 opacity-0 transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100">
                     <span className="inline-block rounded-full bg-accent px-3 py-1 text-xs font-medium text-ink">
                       Napsat →

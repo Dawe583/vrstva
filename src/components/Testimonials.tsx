@@ -1,32 +1,31 @@
 import { IconStarFilled, IconQuote } from "@tabler/icons-react";
 import SplitText from "./SplitText";
-import Img from "./Img";
-import { IMAGES } from "../images";
+import Avatar from "./Avatar";
 
 const QUOTES = [
   {
     text: "Nový web nám během tří měsíců zdvojnásobil počet poptávek. Spolupráce byla přesná a rychlá.",
     name: "Tereza Vlachová",
     role: "Marketingová ředitelka, Bystrá",
-    pic: IMAGES.team[1],
+    seed: 1,
   },
   {
     text: "Konečně web, který vypadá jako my. Vrstva pochopila naši značku dřív než my sami.",
     name: "Ondřej Roubal",
     role: "Majitel, Roubal a syn",
-    pic: IMAGES.team[0],
+    seed: 0,
   },
   {
     text: "Rezervace nám vzlétly. A hlavně — hosté píšou, že web je zážitek sám o sobě.",
     name: "Petra Malá",
     role: "Provozní, hotel Mezanin",
-    pic: IMAGES.team[3],
+    seed: 3,
   },
   {
     text: "Rychlost, detail a nula výmluv. Přesně tým, se kterým chcete stavět značku.",
     name: "Jan Kotek",
     role: "Zakladatel, Atelier HM",
-    pic: IMAGES.team[2],
+    seed: 2,
   },
 ];
 
@@ -45,7 +44,7 @@ function Card({ q }: { q: (typeof QUOTES)[number] }) {
         </blockquote>
       </div>
       <figcaption className="mt-8 flex items-center gap-3">
-        <Img pic={q.pic} className="h-11 w-11 rounded-full" imgClassName="grayscale" />
+        <Avatar name={q.name} seed={q.seed} className="h-11 w-11 text-sm" />
         <div className="text-sm">
           <div className="text-paper">{q.name}</div>
           <div className="text-mute">{q.role}</div>

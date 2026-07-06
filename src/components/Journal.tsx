@@ -1,11 +1,17 @@
+import { useState } from "react";
+import { AnimatePresence } from "motion/react";
 import { IconArrowUpRight } from "@tabler/icons-react";
 import Reveal from "./Reveal";
 import SplitText from "./SplitText";
-import Img from "./Img";
-import { JOURNAL } from "../content";
+import MeshTile from "./MeshTile";
+import Article from "./Article";
+import { JOURNAL, type Article as ArticleT } from "../content";
 
-/** Journal / blog — náhledy článků se zoom-obrázky. */
+/** Journal / blog — náhledy článků s generovanými animovanými vizuály.
+    Klik otevře detail článku v overlay. */
 export default function Journal() {
+  const [active, setActive] = useState<ArticleT | null>(null);
+
   return (
     <section id="journal" className="py-24 md:py-32">
       <div className="mx-auto max-w-[1400px] px-6 md:px-10">
@@ -18,8 +24,8 @@ export default function Journal() {
             />
           </div>
           <Reveal>
-            <a
-              href="#journal"
+            <button
+              onClick={() => setActive(JOURNAL[0])}
               data-cursor="hover"
               className="group inline-flex items-center gap-2 text-sm text-muteb transition-colors hover:text-paper"
             >
@@ -29,19 +35,23 @@ export default function Journal() {
                 stroke={2}
                 className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
               />
-            </a>
+            </button>
           </Reveal>
         </div>
 
         <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
           {JOURNAL.map((a, i) => (
             <Reveal key={a.title} delay={i * 0.08}>
-              <a href="#journal" data-cursor="view" className="group block">
+              <button
+                onClick={() => setActive(a)}
+                data-cursor="view"
+                className="group block w-full text-left"
+              >
                 <div className="overflow-hidden rounded-xl">
-                  <Img
-                    pic={a.pic}
-                    className="aspect-[16/10] w-full"
-                    imgClassName="grayscale-[0.3] transition-all duration-[900ms] ease-out group-hover:scale-105 group-hover:grayscale-0"
+                  <MeshTile
+                    seed={a.seed}
+                    motif={a.motif}
+                    className="aspect-[16/10] w-full transition-transform duration-[900ms] ease-out group-hover:scale-[1.03]"
                   />
                 </div>
                 <div className="mt-5 flex items-center gap-3 text-xs text-mute">
@@ -52,11 +62,15 @@ export default function Journal() {
                 <h3 className="mt-3 max-w-[24ch] font-display text-xl font-medium leading-snug tracking-tight transition-colors group-hover:text-accent md:text-2xl">
                   {a.title}
                 </h3>
-              </a>
+              </button>
             </Reveal>
           ))}
         </div>
       </div>
+
+      <AnimatePresence>
+        {active && <Article article={active} onClose={() => setActive(null)} />}
+      </AnimatePresence>
     </section>
   );
 }

@@ -44,22 +44,16 @@ export default function LiveBackground() {
       className="pointer-events-none fixed inset-0 -z-10 overflow-hidden bg-ink"
     >
       <motion.div
-        style={{ y: y1, x: cx }}
-        className="absolute -left-[10%] top-[-15%] h-[70vmax] w-[70vmax] rounded-full opacity-[0.16] blur-[100px]"
+        style={{ y: y1, x: cx, willChange: "transform" }}
+        className="absolute -left-[10%] top-[-15%] h-[62vmax] w-[62vmax] rounded-full opacity-[0.15] blur-[70px]"
       >
         <div className="h-full w-full rounded-full bg-[radial-gradient(circle,var(--color-accent),transparent_60%)]" />
       </motion.div>
       <motion.div
-        style={{ y: y2, x: cy }}
-        className="absolute right-[-15%] top-[35%] h-[60vmax] w-[60vmax] rounded-full opacity-[0.10] blur-[110px]"
+        style={{ y: y2, x: cy, willChange: "transform" }}
+        className="absolute right-[-15%] top-[35%] h-[56vmax] w-[56vmax] rounded-full opacity-[0.10] blur-[80px]"
       >
-        <div className="h-full w-full rounded-full bg-[radial-gradient(circle,#3a4d6b,transparent_60%)]" />
-      </motion.div>
-      <motion.div
-        style={{ y: y1 }}
-        className="absolute bottom-[-20%] left-[30%] h-[55vmax] w-[55vmax] rounded-full opacity-[0.08] blur-[120px]"
-      >
-        <div className="aurora-drift h-full w-full rounded-full bg-[radial-gradient(circle,var(--color-accent),transparent_65%)]" />
+        <div className="aurora-drift h-full w-full rounded-full bg-[radial-gradient(circle,#3a4d6b,transparent_60%)]" />
       </motion.div>
     </div>
   );

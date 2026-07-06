@@ -25,22 +25,30 @@ export default function CustomCursor() {
       ry = my;
     let raf = 0;
 
+    let overView = false;
+    let overInter = false;
     const move = (e: PointerEvent) => {
       mx = e.clientX;
       my = e.clientY;
-      if (dot.current) dot.current.style.transform = `translate(${mx}px, ${my}px)`;
-      // reakce na typ prvku pod kurzorem
+      if (dot.current) dot.current.style.transform = `translate3d(${mx}px, ${my}px, 0)`;
+      // reakce na typ prvku pod kurzorem (jen při změně => bez zbytečných reflow)
       const t = e.target as HTMLElement | null;
-      const media = t?.closest("[data-cursor='view']");
-      const inter = t?.closest("a, button, [data-cursor='hover'], input, textarea");
-      root.classList.toggle("cur-view", !!media);
-      root.classList.toggle("cur-hover", !!inter && !media);
+      const media = !!t?.closest("[data-cursor='view']");
+      const inter = !media && !!t?.closest("a, button, [data-cursor='hover'], input, textarea");
+      if (media !== overView) {
+        overView = media;
+        root.classList.toggle("cur-view", media);
+      }
+      if (inter !== overInter) {
+        overInter = inter;
+        root.classList.toggle("cur-hover", inter);
+      }
     };
 
     const loop = () => {
-      rx += (mx - rx) * 0.16;
-      ry += (my - ry) * 0.16;
-      if (ring.current) ring.current.style.transform = `translate(${rx}px, ${ry}px)`;
+      rx += (mx - rx) * 0.18;
+      ry += (my - ry) * 0.18;
+      if (ring.current) ring.current.style.transform = `translate3d(${rx}px, ${ry}px, 0)`;
       raf = requestAnimationFrame(loop);
     };
 

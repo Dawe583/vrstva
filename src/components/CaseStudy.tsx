@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { motion } from "motion/react";
 import { IconX, IconArrowUpRight } from "@tabler/icons-react";
-import Img from "./Img";
+import MeshTile from "./MeshTile";
 import { lockScroll } from "../lenis";
 import { EASE } from "../motion";
 import type { Project } from "../content";
@@ -59,7 +59,7 @@ export default function CaseStudy({ project, onClose }: { project: Project; onCl
         </div>
 
         <div className="mt-14 overflow-hidden rounded-2xl">
-          <Img pic={project.cover} eager className="aspect-[16/9] w-full" imgClassName="grayscale-[0.2]" />
+          <MeshTile seed={project.seed} motif={project.motif} className="aspect-[16/9] w-full" />
         </div>
 
         <div className="mt-16 grid gap-10 md:grid-cols-2 md:gap-16">
@@ -89,7 +89,7 @@ export default function CaseStudy({ project, onClose }: { project: Project; onCl
         <div className="mt-16 grid gap-4 md:grid-cols-2">
           {project.shots.map((s, i) => (
             <div key={i} className={`overflow-hidden rounded-xl ${i === 0 ? "md:col-span-2" : ""}`}>
-              <Img pic={s} className="aspect-[16/10] w-full" imgClassName="grayscale-[0.25]" />
+              <MeshTile seed={s.seed} motif={s.motif} className="aspect-[16/10] w-full" />
             </div>
           ))}
         </div>

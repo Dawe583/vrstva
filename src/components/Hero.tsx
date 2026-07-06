@@ -8,10 +8,9 @@ import {
 import { IconArrowDownRight } from "@tabler/icons-react";
 import MagneticButton from "./MagneticButton";
 import HeroCanvas from "./HeroCanvas";
-import Img from "./Img";
+import MeshTile from "./MeshTile";
 import { scrollToId } from "../lenis";
 import { EASE, amp } from "../motion";
-import { IMAGES } from "../images";
 
 const ROTATING = ["pamatují.", "vydělávají.", "odliší.", "posunou dál."];
 
@@ -161,18 +160,23 @@ export default function Hero({ ready }: { ready: boolean }) {
 
         <motion.div
           className="order-1 md:order-2 md:col-span-6 md:col-start-7"
-          data-cursor="view"
           initial={{ clipPath: "inset(100% 0 0 0)" }}
           animate={ready ? { clipPath: "inset(0% 0 0 0)" } : undefined}
           transition={{ duration: 1.1, delay: 0.45, ease: EASE }}
         >
-          <motion.div style={{ y: imgY }} className="overflow-hidden">
-            <Img
-              pic={IMAGES.hero}
-              eager
-              className="aspect-[14/10] w-full"
-              imgClassName="grayscale-[0.25] scale-105"
-            />
+          <motion.div style={{ y: imgY }} className="relative overflow-hidden rounded-2xl border border-line">
+            <MeshTile seed={3} motif="orbit" className="aspect-[14/10] w-full" />
+            {/* plovoucí mini "live" karta */}
+            <div className="float-slow absolute bottom-5 left-5 rounded-xl border border-line bg-ink/60 px-4 py-3 backdrop-blur">
+              <div className="flex items-center gap-2 text-xs text-muteb">
+                <span className="h-1.5 w-1.5 rounded-full bg-accent" />
+                Živý náhled
+              </div>
+              <div className="mt-1 font-display text-lg font-medium tracking-tight">Vrstva Studio</div>
+            </div>
+            <div className="absolute right-5 top-5 rounded-full border border-line bg-ink/50 px-3 py-1.5 text-xs text-muteb backdrop-blur">
+              WebGL · animace
+            </div>
           </motion.div>
         </motion.div>
       </motion.div>

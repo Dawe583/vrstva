@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { IconArrowUpRight } from "@tabler/icons-react";
-import Img from "./Img";
+import MeshTile from "./MeshTile";
 import CaseStudy from "./CaseStudy";
 import { EASE } from "../motion";
 import { PROJECTS, type Project } from "../content";
@@ -70,10 +70,10 @@ export default function Work() {
               aria-label={`Otevřít case study ${p.name}`}
             >
               <div className="relative overflow-hidden rounded-xl">
-                <Img
-                  pic={p.cover}
-                  className="aspect-[15/10] w-full"
-                  imgClassName="grayscale-[0.35] transition-all duration-[900ms] ease-out group-hover:scale-[1.04] group-hover:grayscale-0"
+                <MeshTile
+                  seed={p.seed}
+                  motif={p.motif}
+                  className="aspect-[15/10] w-full transition-transform duration-[900ms] ease-out group-hover:scale-[1.03]"
                 />
                 <span className="pointer-events-none absolute left-5 top-5 font-display text-sm text-paper/70">
                   0{i + 1}

@@ -22,7 +22,7 @@ float noise(vec2 p){
   vec2 u=f*f*(3.-2.*f);
   return mix(a,b,u.x)+(c-a)*u.y*(1.-u.x)+(d-b)*u.x*u.y;
 }
-float fbm(vec2 p){ float v=0.,a=0.5; for(int i=0;i<5;i++){v+=a*noise(p);p*=2.03;a*=0.5;} return v; }
+float fbm(vec2 p){ float v=0.,a=0.5; for(int i=0;i<4;i++){v+=a*noise(p);p*=2.03;a*=0.5;} return v; }
 
 void main(){
   vec2 uv=gl_FragCoord.xy/uRes.xy;
@@ -73,7 +73,7 @@ export default function Playground() {
 
     let renderer: Renderer;
     try {
-      renderer = new Renderer({ alpha: false, antialias: false, dpr: Math.min(window.devicePixelRatio, 1.5) });
+      renderer = new Renderer({ alpha: false, antialias: false, dpr: Math.min(window.devicePixelRatio, 1.25) });
     } catch {
       return;
     }

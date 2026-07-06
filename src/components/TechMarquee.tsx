@@ -28,15 +28,21 @@ const TECH = [
   { icon: IconBrandOpenai, label: "AI integrace" },
 ];
 
-function Row({ reverse = false }: { reverse?: boolean }) {
-  const items = [...TECH, ...TECH];
+const maskStyle = {
+  WebkitMaskImage: "linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)",
+  maskImage: "linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)",
+} as const;
+
+function Row({ items, reverse = false }: { items: typeof TECH; reverse?: boolean }) {
+  // duplikace kvůli plynulé smyčce (-50 %) — vizuálně jeden souvislý pás
+  const loop = [...items, ...items];
   return (
-    <div className="flex w-max shrink-0">
-      <div className={`flex ${reverse ? "marquee-track-rev" : "marquee-track"}`}>
-        {items.map((t, i) => (
+    <div className="flex overflow-hidden" style={maskStyle}>
+      <div className={`flex w-max ${reverse ? "marquee-track-rev" : "marquee-track"}`}>
+        {loop.map((t, i) => (
           <span
             key={i}
-            className="group mx-4 flex items-center gap-2.5 rounded-full border border-line bg-ink2/40 px-5 py-2.5 text-muteb transition-colors hover:border-accent/40 md:mx-5"
+            className="group mx-2.5 flex items-center gap-2.5 rounded-full border border-line bg-ink2/40 px-5 py-2.5 text-muteb transition-colors hover:border-accent/40"
           >
             <t.icon size={20} stroke={1.6} className="text-mute transition-colors group-hover:text-accent" />
             <span className="whitespace-nowrap text-sm font-medium">{t.label}</span>
@@ -47,8 +53,10 @@ function Row({ reverse = false }: { reverse?: boolean }) {
   );
 }
 
-/** Dvouřadý pás technologií a nástrojů (opačné směry). */
+/** Dvouřadý pás technologií. Druhá řada je posunutá a jede opačně/jiným tempem,
+    takže nepůsobí jako zdvojení. */
 export default function TechMarquee() {
+  const shifted = [...TECH.slice(6), ...TECH.slice(0, 6)];
   return (
     <section aria-label="Technologie a nástroje" className="overflow-hidden border-y border-line py-10 md:py-14">
       <div className="mx-auto mb-8 max-w-[1400px] px-6 md:px-10">
@@ -57,12 +65,8 @@ export default function TechMarquee() {
         </span>
       </div>
       <div className="flex flex-col gap-4">
-        <div className="flex overflow-hidden">
-          <Row />
-        </div>
-        <div className="flex overflow-hidden">
-          <Row reverse />
-        </div>
+        <Row items={TECH} />
+        <Row items={shifted} reverse />
       </div>
     </section>
   );

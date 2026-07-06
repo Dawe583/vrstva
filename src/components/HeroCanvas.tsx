@@ -24,7 +24,7 @@ float noise(vec2 p){
 }
 float fbm(vec2 p){
   float v=0., a=0.5;
-  for(int i=0;i<5;i++){ v+=a*noise(p); p*=2.02; a*=0.5; }
+  for(int i=0;i<4;i++){ v+=a*noise(p); p*=2.02; a*=0.5; }
   return v;
 }
 
@@ -78,7 +78,7 @@ export default function HeroCanvas() {
 
     let renderer: Renderer;
     try {
-      renderer = new Renderer({ alpha: false, antialias: false, dpr: Math.min(window.devicePixelRatio, 1.5) });
+      renderer = new Renderer({ alpha: false, antialias: false, dpr: Math.min(window.devicePixelRatio, 1.25) });
     } catch {
       return; // bez WebGL zůstane CSS fallback rodiče
     }

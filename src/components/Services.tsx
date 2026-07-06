@@ -13,8 +13,7 @@ import {
 import Reveal from "./Reveal";
 import SplitText from "./SplitText";
 import TiltCard from "./TiltCard";
-import Img from "./Img";
-import { IMAGES } from "../images";
+import MeshTile from "./MeshTile";
 
 const CAPS = [
   { icon: IconBolt, label: "Rychlost & Core Web Vitals" },
@@ -45,10 +44,10 @@ export default function Services() {
                 data-cursor="view"
                 className="group relative h-full min-h-[320px] overflow-hidden rounded-2xl md:min-h-[440px]"
               >
-                <Img
-                  pic={IMAGES.services.webdesign}
-                  className="absolute inset-0 h-full w-full"
-                  imgClassName="grayscale-[0.4] transition-transform duration-[900ms] ease-out group-hover:scale-105"
+                <MeshTile
+                  seed={2}
+                  motif="grid"
+                  className="absolute inset-0 h-full w-full transition-transform duration-[900ms] ease-out group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/30 to-transparent" />
                 <div className="relative flex h-full min-h-[320px] flex-col justify-end p-7 md:min-h-[440px] md:p-9">
@@ -108,10 +107,10 @@ export default function Services() {
                 data-cursor="view"
                 className="group relative h-full min-h-[240px] overflow-hidden rounded-2xl"
               >
-                <Img
-                  pic={IMAGES.services.analytics}
-                  className="absolute inset-0 h-full w-full"
-                  imgClassName="grayscale transition-transform duration-[900ms] ease-out group-hover:scale-105"
+                <MeshTile
+                  seed={4}
+                  motif="wave"
+                  className="absolute inset-0 h-full w-full transition-transform duration-[900ms] ease-out group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/40 to-ink/10" />
                 <div className="relative flex h-full min-h-[240px] flex-col justify-end p-7 md:p-9">
