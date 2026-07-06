@@ -55,7 +55,6 @@ export default function Partners() {
               width={p.logoW}
               height={p.logoH}
               className="h-6 w-auto object-contain opacity-90"
-              loading="lazy"
             />
             <div className="mt-10 grid grid-cols-2 gap-6">
               {[p.left, p.right].map((stat, j) => (

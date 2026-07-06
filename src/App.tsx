@@ -1,5 +1,7 @@
+import { useEffect } from "react";
 import { MotionConfig } from "motion/react";
 import { useLenis } from "./lenis";
+import { PROJECTS, JOURNAL, SKILLS, TESTIMONIALS, PARTNERS } from "./site";
 import Nav from "./components/Nav";
 import Hero from "./components/Hero";
 import Partners from "./components/Partners";
@@ -23,6 +25,23 @@ import Footer from "./components/Footer";
  */
 export default function App() {
   useLenis();
+
+  // Přednačtení VŠECH obrázků hned při startu — nic se nedotahuje až při
+  // scrollu, takže sekce jsou plné okamžitě (výslovné přání uživatele).
+  useEffect(() => {
+    const urls = [
+      ...PROJECTS.map((p) => p.img),
+      ...JOURNAL.map((j) => j.img),
+      ...SKILLS.map((s) => s.img),
+      ...TESTIMONIALS.map((t) => t.img),
+      ...PARTNERS.map((p) => p.logo),
+    ];
+    for (const src of urls) {
+      const img = new Image();
+      img.decoding = "async";
+      img.src = src;
+    }
+  }, []);
 
   return (
     <MotionConfig reducedMotion="never">

@@ -1,6 +1,14 @@
 import { useEffect, useRef, useState } from "react";
-import { motion, useScroll, useTransform } from "motion/react";
+import {
+  motion,
+  useScroll,
+  useTransform,
+  useMotionValue,
+  useMotionValueEvent,
+} from "motion/react";
 import { MEDIA, STATS } from "../site";
+
+const clamp01 = (v: number) => Math.min(1, Math.max(0, v));
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
@@ -88,10 +96,18 @@ export default function Hero() {
 
   const scale = useTransform(scrollYProgress, [0.06, 0.88], [1, cover]);
   const radius = useTransform(scrollYProgress, [0.06, 0.55], [14, 0]);
-  const metaFade = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
-  // Nadpis zůstává PŘED videem (jako v předloze) a vytratí se až ke konci
-  // zoomu, aby finální záběr byl čistě video přes celou obrazovku.
-  const headFade = useTransform(scrollYProgress, [0.5, 0.75], [1, 0]);
+
+  // Opacity řídíme imperativně (useMotionValue + event) místo useTransform:
+  // motion by si scroll-vázanou opacity jinak přeložil do nativní
+  // ScrollTimeline, která u sticky cíle počítá progress jinak a text se
+  // „vracel". Takhle je fade deterministický: plně vidět jen na startu,
+  // scrollem postupně mizí a je pryč dřív, než video zakryje celý displej.
+  const metaFade = useMotionValue(1);
+  const headFade = useMotionValue(1);
+  useMotionValueEvent(scrollYProgress, "change", (v) => {
+    metaFade.set(1 - clamp01(v / 0.18));
+    headFade.set(1 - clamp01((v - 0.08) / 0.42));
+  });
 
   return (
     <section id="top" className="relative">
@@ -172,10 +188,12 @@ export default function Hero() {
           transition={{ duration: 0.9, ease: EASE }}
           className="flex flex-col gap-10 border-t border-line pt-10 md:flex-row md:items-start md:justify-between"
         >
-          <div className="flex gap-12">
+          <div className="flex flex-wrap gap-8 md:gap-12">
             {STATS.map((s) => (
               <div key={s.label}>
-                <div className="font-display text-[34px] text-paper">{s.value}</div>
+                <div className="font-display text-[28px] text-paper md:text-[34px]">
+                  {s.value}
+                </div>
                 <div className="mt-1 text-[13px] text-mute">{s.label}</div>
               </div>
             ))}
