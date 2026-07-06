@@ -7,7 +7,7 @@ import {
   useMotionValueEvent,
 } from "motion/react";
 import { MEDIA, STATS } from "../site";
-import { local, fallback } from "../media";
+import { local } from "../media";
 
 const clamp01 = (v: number) => Math.min(1, Math.max(0, v));
 
@@ -168,7 +168,6 @@ export default function Hero() {
             >
               <video
                 src={local(MEDIA.heroVideo)}
-                onError={fallback(MEDIA.heroVideo)}
                 className="h-full w-full object-cover"
                 autoPlay
                 loop

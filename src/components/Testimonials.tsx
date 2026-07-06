@@ -2,7 +2,7 @@ import { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import Reveal from "./Reveal";
 import { TESTIMONIALS } from "../site";
-import { local, fallback } from "../media";
+import { local } from "../media";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
@@ -58,13 +58,12 @@ export default function Testimonials() {
       <div className="relative mx-auto max-w-[1100px] px-5">
         <Reveal>
           <div className="overflow-hidden rounded-2xl border border-line bg-ink">
-            <div className="grid md:grid-cols-[0.85fr_1.15fr]">
+            <div className="grid md:min-h-[440px] md:grid-cols-[0.85fr_1.15fr]">
               <div className="relative aspect-[4/5] md:aspect-auto">
                 <AnimatePresence mode="wait">
                   <motion.img
                     key={t.img}
                     src={local(t.img)}
-                    onError={fallback(t.img)}
                     alt=""
                     decoding="async"
                     initial={{ opacity: 0, scale: 1.06 }}
@@ -76,7 +75,7 @@ export default function Testimonials() {
                 </AnimatePresence>
               </div>
 
-              <div className="flex flex-col justify-between gap-10 p-8 md:p-12">
+              <div className="flex flex-col justify-between gap-8 p-7 md:gap-10 md:p-11">
                 <AnimatePresence mode="wait">
                   <motion.blockquote
                     key={t.quote}
@@ -84,17 +83,15 @@ export default function Testimonials() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -12 }}
                     transition={{ duration: 0.5, ease: EASE }}
-                    className="font-display text-[clamp(22px,2.4vw,32px)] font-normal normal-case leading-[1.2] tracking-normal text-paper"
+                    className="font-sans text-[clamp(17px,1.9vw,25px)] font-medium leading-[1.45] text-paper"
                   >
-                    "{t.quote}"
+                    „{t.quote}"
                   </motion.blockquote>
                 </AnimatePresence>
 
                 <div className="flex items-end justify-between">
                   <div>
-                    <div className="font-display text-lg normal-case tracking-normal text-paper">
-                      {t.name}
-                    </div>
+                    <div className="font-display text-lg text-paper">{t.name}</div>
                     <div className="mt-1 text-[13px] text-mute">{t.role}</div>
                   </div>
                   <div className="flex gap-3">

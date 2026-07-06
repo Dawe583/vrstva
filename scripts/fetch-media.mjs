@@ -1,22 +1,30 @@
 /* Stáhne všechna média (obrázky + videa) z Framer CDN do public/media,
  * aby je Vercel servíroval ze stejné domény = rychleji a bez závislosti
- * na cizím CDN. Spouští se automaticky přes `prebuild`.
+ * na cizím CDN. Spouští se přes `prebuild` (vercel.json má buildCommand
+ * "npm run build", takže hook proběhne).
  *
- * Odolnost: když je CDN nedostupné (např. lokální build za firemní
- * proxy), skript to po krátkém testu vzdá a build pokračuje — aplikace
- * pak přes onError použije původní CDN URL, takže se nic nerozbije. */
+ * Zapisuje src/media-manifest.json se seznamem ÚSPĚŠNĚ stažených souborů.
+ * Aplikace pak lokální cestu použije jen pro ně; pro zbytek jde rovnou na
+ * CDN (žádné 404). Když je CDN nedostupné (build za firemní proxy),
+ * manifest zůstane prázdný a vše jede z CDN — nic se nerozbije. */
 
-import { readFileSync, mkdirSync, existsSync, writeFileSync } from "node:fs";
+import {
+  readFileSync,
+  mkdirSync,
+  existsSync,
+  writeFileSync,
+  statSync,
+} from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import https from "node:https";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const OUT = join(root, "public", "media");
+const MANIFEST = join(root, "src", "media-manifest.json");
 const IMG_BASE = "https://framerusercontent.com/images/";
 const VID_BASE = "https://framerusercontent.com/assets/";
 
-// --- vytáhni všechny CDN URL ze site.ts ---------------------------------
 const site = readFileSync(join(root, "src", "site.ts"), "utf8")
   .replaceAll("${IMG}", IMG_BASE)
   .replaceAll("${VID}", VID_BASE);
@@ -33,13 +41,11 @@ function localName(url) {
   return null;
 }
 
-// Jen konkrétní soubory (s platným názvem) — ať do seznamu nepropadnou
-// holé bázové URL z definic `const IMG = "..."` apod.
 const urls = [
   ...new Set(site.match(/https:\/\/framerusercontent\.com\/[^\s`"']+/g) || []),
 ].filter((u) => localName(u) !== null);
 
-function download(url, dest, timeout = 15000) {
+function download(url, dest, timeout) {
   return new Promise((resolve, reject) => {
     const req = https.get(url, (res) => {
       if (res.statusCode !== 200) {
@@ -49,8 +55,9 @@ function download(url, dest, timeout = 15000) {
       const chunks = [];
       res.on("data", (c) => chunks.push(c));
       res.on("end", () => {
-        writeFileSync(dest, Buffer.concat(chunks));
-        resolve(Buffer.concat(chunks).length);
+        const buf = Buffer.concat(chunks);
+        writeFileSync(dest, buf);
+        resolve(buf.length);
       });
     });
     req.setTimeout(timeout, () => req.destroy(new Error("timeout")));
@@ -58,47 +65,58 @@ function download(url, dest, timeout = 15000) {
   });
 }
 
+function writeManifest(names) {
+  writeFileSync(MANIFEST, JSON.stringify(names.sort(), null, 2) + "\n");
+}
+
 async function main() {
   mkdirSync(OUT, { recursive: true });
 
-  // rychlý test dostupnosti CDN — ať zbytečně nečekáme na 30 timeoutů
+  // rychlý test dostupnosti CDN
   const probe = urls[0];
   try {
-    await download(probe, join(OUT, localName(probe)), 6000);
+    await download(probe, join(OUT, localName(probe)), 8000);
   } catch (e) {
     console.warn(
-      `[fetch-media] CDN nedostupné (${e.message}) — přeskakuji, aplikace použije CDN fallback.`
+      `[fetch-media] CDN nedostupné (${e.message}) — manifest prázdný, vše jede z CDN.`
     );
+    writeManifest([]);
     return;
   }
 
-  let ok = 1,
-    fail = 0,
-    skip = 0,
-    bytes = 0;
+  const done = [localName(probe)];
+  let fail = 0,
+    bytes = statSync(join(OUT, localName(probe))).size;
+
   await Promise.all(
     urls.slice(1).map(async (url) => {
       const name = localName(url);
-      if (!name) return;
       const dest = join(OUT, name);
-      if (existsSync(dest)) {
-        skip++;
+      // videa jsou větší → delší timeout
+      const timeout = name.endsWith(".mp4") ? 60000 : 20000;
+      if (existsSync(dest) && statSync(dest).size > 0) {
+        done.push(name);
         return;
       }
       try {
-        bytes += await download(url, dest);
-        ok++;
+        bytes += await download(url, dest, timeout);
+        done.push(name);
       } catch (e) {
         fail++;
-        console.warn(`[fetch-media] ${name}: ${e.message}`);
+        console.warn(`[fetch-media] ${name}: ${e.message} → zůstane na CDN`);
       }
     })
   );
+
+  writeManifest(done);
   console.log(
-    `[fetch-media] hotovo: ${ok} staženo, ${skip} přeskočeno, ${fail} selhalo (${(bytes / 1024 / 1024).toFixed(1)} MB)`
+    `[fetch-media] hotovo: ${done.length}/${urls.length} self-hostováno, ${fail} zůstává na CDN (${(bytes / 1024 / 1024).toFixed(1)} MB)`
   );
 }
 
 main().catch((e) => {
-  console.warn("[fetch-media] chyba, pokračuji s CDN fallbackem:", e.message);
+  console.warn("[fetch-media] chyba:", e.message);
+  try {
+    writeManifest([]);
+  } catch {}
 });

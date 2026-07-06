@@ -1,7 +1,7 @@
 import Reveal from "./Reveal";
 import FrameReveal from "./FrameReveal";
 import { PROJECTS, type Project } from "../site";
-import { local, fallback } from "../media";
+import { local } from "../media";
 
 /** Nadpis „featured / works" — dvě řádky velkých verzálek. */
 function Heading() {
@@ -79,13 +79,12 @@ function Card({ p }: { p: Project }) {
       <div className="relative aspect-[16/10] overflow-hidden rounded-xl border border-line">
         <img
           src={local(p.img)}
-          onError={fallback(p.img)}
           alt={p.title}
           width={768}
           height={480}
           className="h-full w-full transform-gpu object-cover transition-transform duration-[900ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.04]"
           decoding="async"
-          fetchPriority="high"
+          loading="lazy"
         />
         <FrameReveal />
       </div>

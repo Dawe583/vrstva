@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
 import { MEDIA } from "../site";
-import { local, fallback } from "../media";
+import { local } from "../media";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
@@ -50,7 +50,6 @@ export default function Cta() {
           <div className="h-[22vh] w-[min(300px,70vw)] overflow-hidden rounded-lg border border-line transition-[height] duration-[1100ms] ease-[cubic-bezier(0.16,1,0.3,1)] hover:h-[36vh]">
             <video
               src={local(MEDIA.ctaVideo)}
-              onError={fallback(MEDIA.ctaVideo)}
               className="h-full w-full object-cover"
               autoPlay
               loop
