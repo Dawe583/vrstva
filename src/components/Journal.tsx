@@ -14,7 +14,7 @@ export default function Journal() {
 
       <div className="mt-16 grid gap-6 md:grid-cols-3">
         {JOURNAL.map((post, i) => (
-          <Reveal key={post.slug} delay={i * 0.08} amount={0.2} className="cv-auto">
+          <Reveal key={post.slug} delay={i * 0.08} amount={0.2}>
             <a
               href={`#journal`}
               onClick={(e) => e.preventDefault()}
@@ -26,7 +26,7 @@ export default function Journal() {
                   alt={post.title}
                   width={768}
                   height={960}
-                  className="h-full w-full transform-gpu object-cover transition-transform duration-[900ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.05]"
+                  className="h-full w-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.05]"
                   decoding="async"
                   loading="lazy"
                 />

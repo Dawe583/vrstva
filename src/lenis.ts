@@ -11,13 +11,13 @@ let lenis: Lenis | null = null;
 export function useLenis() {
   useEffect(() => {
     // Plynulý scroll běží ZÁMĚRNĚ i při systémovém „omezit pohyb" a i na
-    // dotykových zařízeních (syncTouch), aby scroll-driven efekty jely všude.
+    // Plynulý scroll kolečkem na desktopu; na dotyku ZÁMĚRNĚ necháváme
+    // nativní scroll (syncTouch vypnutý) — je plynulejší než hijack a
+    // scroll-driven efekty fungují i tak, protože čtou pozici scrollu.
     lenis = new Lenis({
-      duration: 1.1,
-      easing: (t) => 1 - Math.pow(2, -10 * t),
+      lerp: 0.12, // svižná, responzivní odezva (méně „líný" glide než duration)
       smoothWheel: true,
-      syncTouch: true,
-      touchMultiplier: 1.5,
+      syncTouch: false,
     });
 
     let raf = 0;

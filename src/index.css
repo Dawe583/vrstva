@@ -64,14 +64,6 @@ body {
   background: var(--color-line);
 }
 
-/* Karty mimo obrazovku se nerenderují (layout/paint skip) => plynulý
-   scroll dlouhými sekcemi. Obrázky se stahují dál okamžitě — content-
-   visibility neblokuje síť, jen šetří vykreslování. */
-.cv-auto {
-  content-visibility: auto;
-  contain-intrinsic-size: auto 520px;
-}
-
 /* ==== Marquee (běžící pás log) ==== */
 .marquee-track {
   animation: marquee 32s linear infinite;

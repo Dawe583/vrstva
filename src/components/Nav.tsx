@@ -24,7 +24,7 @@ export default function Nav() {
       animate={hidden ? "hidden" : "visible"}
       transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
       className={`fixed inset-x-0 top-0 z-[90] transition-colors duration-500 ${
-        solid ? "bg-ink/80 backdrop-blur-md" : "bg-transparent"
+        solid ? "bg-ink/95" : "bg-transparent"
       }`}
     >
       <nav className="mx-auto flex h-[68px] max-w-[1320px] items-center justify-between px-5 md:px-8">
