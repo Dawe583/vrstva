@@ -5,7 +5,7 @@ import { PROJECTS, type Project } from "../site";
 function Heading() {
   return (
     <div className="mb-14 md:mb-20">
-      {["featured", "works"].map((w, i) => (
+      {["vybrané", "práce"].map((w, i) => (
         <Reveal key={w} delay={i * 0.08}>
           <h2 className="font-display text-[clamp(56px,13vw,180px)] leading-[0.9] text-paper">
             {w}

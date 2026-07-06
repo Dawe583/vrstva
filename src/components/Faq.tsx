@@ -49,12 +49,12 @@ export default function Faq() {
     <section id="faq" className="mx-auto max-w-[1000px] px-5 py-24 md:py-32">
       <div className="mb-14 text-center">
         <Reveal>
-          <h2 className="font-display text-[clamp(44px,9vw,120px)] text-paper">
-            FAQ
+          <h2 className="font-display text-[clamp(40px,7vw,104px)] leading-[0.95] text-paper">
+            Časté dotazy
           </h2>
         </Reveal>
         <Reveal delay={0.08}>
-          <p className="mt-4 text-[15px] text-mute">Clear answers. No guesswork.</p>
+          <p className="mt-4 text-[15px] text-mute">Jasné odpovědi. Žádné dohady.</p>
         </Reveal>
       </div>
 

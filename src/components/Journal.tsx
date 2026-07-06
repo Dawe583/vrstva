@@ -6,7 +6,7 @@ export default function Journal() {
     <section id="journal" className="mx-auto max-w-[1320px] px-5 py-24 md:py-32">
       <Reveal>
         <h2 className="text-center font-display text-[clamp(44px,9vw,120px)] text-paper">
-          The Journal
+          Žurnál
         </h2>
       </Reveal>
 

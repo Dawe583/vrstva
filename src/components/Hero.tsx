@@ -82,11 +82,11 @@ export default function Hero() {
           transition={{ duration: 0.7, ease: EASE }}
           className="mb-5 inline-block rounded-full border border-line bg-ink/40 px-4 py-1.5 text-[12px] uppercase tracking-[0.18em] text-paper"
         >
-          We are
+          Jsme
         </motion.span>
 
-        <h1 className="font-display text-[clamp(72px,17vw,220px)] text-paper">
-          {["Creative", "Studio"].map((word, i) => (
+        <h1 className="font-display text-[clamp(64px,15vw,210px)] text-paper">
+          {["Kreativní", "Studio"].map((word, i) => (
             <span key={word} className="block overflow-hidden">
               <motion.span
                 className="block"
@@ -106,7 +106,7 @@ export default function Hero() {
           transition={{ duration: 0.8, delay: 0.5, ease: EASE }}
           className="mt-6 text-[15px] text-paper"
         >
-          For tech brands
+          Pro technologické značky
         </motion.p>
       </motion.div>
 
@@ -146,10 +146,10 @@ export default function Hero() {
           </div>
           <p className="max-w-[46ch] text-[15px] leading-relaxed text-mute">
             <span className="text-paper">
-              We don't believe in one-size-fits-all solutions.
+              Nevěříme na univerzální řešení.
             </span>{" "}
-            Every brand has its own story — our job is to align strategy, design
-            and motion into one clear system.
+            Každá značka má svůj příběh — naší prací je poskládat strategii,
+            design a pohyb do jednoho srozumitelného systému.
           </p>
         </motion.div>
       </div>

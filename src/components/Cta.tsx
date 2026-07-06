@@ -41,7 +41,7 @@ export default function Cta() {
         ))}
 
         <h2 className="relative font-display text-[clamp(56px,13vw,180px)] leading-[0.9] text-paper">
-          Let's
+          Pojďme
         </h2>
 
         <div className="relative my-6 flex flex-col items-center gap-6 md:my-8 md:flex-row">
@@ -59,7 +59,7 @@ export default function Cta() {
             href="mailto:ahoj@vrstva.studio"
             className="group inline-flex items-center gap-2 rounded-full bg-accent px-7 py-3.5 text-[15px] font-medium text-paper transition-colors hover:bg-paper hover:text-ink"
           >
-            Contact
+            Kontakt
             <svg viewBox="0 0 12 12" className="h-3 w-3" fill="none">
               <path
                 d="M11.25.63v8.12a.63.63 0 0 1-1.25 0V2.13L1.07 11.07A.63.63 0 0 1 .18 10.18L9.12 1.25H2.5a.63.63 0 0 1 0-1.25h8.13c.34 0 .62.28.62.63Z"
@@ -70,7 +70,7 @@ export default function Cta() {
         </div>
 
         <h2 className="relative font-display text-[clamp(56px,13vw,180px)] leading-[0.9] text-paper">
-          collaborate
+          spolupracovat
         </h2>
       </motion.div>
     </section>

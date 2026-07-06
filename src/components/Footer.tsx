@@ -40,7 +40,7 @@ export default function Footer() {
             </div>
             <div>
               <div className="mb-4 text-[12px] uppercase tracking-[0.16em] text-mute2">
-                Contact
+                Kontakt
               </div>
               <ul className="space-y-2.5 text-[14px] text-mute">
                 <li>
@@ -57,7 +57,7 @@ export default function Footer() {
                     onClick={() => scrollToId("#cta")}
                     className="transition-colors hover:text-paper"
                   >
-                    Start a project
+                    Začít projekt
                   </button>
                 </li>
               </ul>
@@ -73,8 +73,8 @@ export default function Footer() {
         </div>
 
         <div className="mt-8 flex flex-col gap-2 text-[12px] text-mute2 md:flex-row md:items-center md:justify-between">
-          <span>© {year} Vrstva. All rights reserved.</span>
-          <span>Made in Prague</span>
+          <span>© {year} Vrstva. Všechna práva vyhrazena.</span>
+          <span>Vyrobeno v Praze</span>
         </div>
       </div>
     </footer>

@@ -23,8 +23,8 @@ export default function Process() {
       >
         {/* horní meta řádek */}
         <div className="flex items-center justify-between text-[13px] text-mute">
-          <span className="lowercase">the name of our process</span>
-          <span className="lowercase">progress &amp; timeline</span>
+          <span className="lowercase">jak pracujeme</span>
+          <span className="lowercase">průběh &amp; harmonogram</span>
         </div>
 
         {/* progress linka se 3 uzly */}
@@ -62,8 +62,8 @@ export default function Process() {
         {/* patka panelu */}
         <div className="mt-16 flex flex-col gap-6 border-t border-line pt-8 md:flex-row md:items-center md:justify-between">
           <p className="max-w-[48ch] text-[15px] leading-relaxed text-paper">
-            A structured, flexible process built for fast-moving startups and
-            modern brands.
+            Strukturovaný, ale flexibilní proces stavěný pro rychlé startupy a
+            moderní značky.
           </p>
           <span className="font-display text-[64px] leading-none text-line">
             /03

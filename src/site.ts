@@ -1,6 +1,6 @@
 /** Obsah a média webu — struktura 1:1 s referencí, značka = Vrstva.
- *  Vizuály využívají veřejné CDN předlohy, aby stránka byla vždy plná
- *  (žádné prázdné bloky jako v předchozím buildu). */
+ *  Texty jsou česky. Vizuály využívají veřejné CDN předlohy, aby stránka
+ *  byla vždy plná (žádné prázdné bloky jako v předchozím buildu). */
 
 const IMG = "https://framerusercontent.com/images/";
 const VID = "https://framerusercontent.com/assets/";
@@ -22,67 +22,67 @@ export type Project = {
 
 export const PROJECTS: Project[] = [
   {
-    slug: "slims-t-shirt",
+    slug: "tricko-slims",
     category: "branding // marketing",
     year: "2026",
     brand: "Gentle Park",
-    title: "slims t-shirt",
+    title: "Tričko Slims",
     img: `${IMG}dEyd7hRzg4wgPG0RDXNDM1Moak.webp?width=1600&height=917`,
   },
   {
-    slug: "iphone-cover",
-    category: "branding // cover design",
+    slug: "kryt-iphone",
+    category: "branding // obaly",
     year: "2026",
     brand: "mobile elegant",
-    title: "i-phone cover",
+    title: "Kryt na iPhone",
     img: `${IMG}YTLLiztyzNibPIlp3rdVwpGhRc.png?width=1376&height=768`,
   },
   {
     slug: "only-the-brave",
-    category: "ui/ux design // website design",
+    category: "ui/ux // webdesign",
     year: "2026",
     brand: "Lereve",
     title: "Only The Brave",
     img: `${IMG}5Xl3vkxzIYkCslhhaUYSPzShNW0.webp?width=1600&height=917`,
   },
   {
-    slug: "sunscreen",
+    slug: "opalovaci-krem",
     category: "branding // marketing",
     year: "2026",
     brand: "syagi",
-    title: "sunscreen",
+    title: "Opalovací krém",
     img: `${IMG}bFAJHKDeaSouskKTyxrbM32z0.png?width=1400&height=1189`,
   },
   {
-    slug: "custom-designed",
+    slug: "na-miru",
     category: "branding // marketing",
     year: "2026",
     brand: "matcha club",
-    title: "custom-designed",
+    title: "Návrh na míru",
     img: `${IMG}AylmkRt1aL0hFRrC4xB5Tvwsg.webp?width=1600&height=917`,
   },
   {
-    slug: "web-design",
-    category: "ui/ux design // agency",
+    slug: "webdesign",
+    category: "ui/ux // agentura",
     year: "2026",
     brand: "orfolio",
-    title: "Web design",
+    title: "Webdesign",
     img: `${IMG}8pG5ifB43qSDxeq1VYhb3k6sgcA.png?width=1200&height=673`,
   },
   {
-    slug: "face-seram",
-    category: "strategy // marketing",
+    slug: "pletove-serum",
+    category: "strategie // marketing",
     year: "2026",
     brand: "Novili",
-    title: "Face seram",
+    title: "Pleťové sérum",
     img: `${IMG}PA46gcLDDhOTxXBrPG24ffJvqY.webp?width=1600&height=917`,
   },
   {
-    slug: "casual-shirt-marketing",
+    slug: "casual-kosile",
     category: "marketing // branding",
     year: "2026",
     brand: "easy fashion",
-    title: "casual shirt marketing",
+    title: "Casual košile",
     img: `${IMG}ZnHx1XRtOSRzIuEbTUJr8QOkHI.webp?width=1600&height=917`,
   },
 ];
@@ -102,36 +102,36 @@ export const PARTNERS: Partner[] = [
     logo: `${IMG}c7gOuXVBIgAOQKrde4yKe9Nth4.svg?width=118&height=25`,
     logoW: 118,
     logoH: 25,
-    left: { value: 150, suffix: "+", label: "Digital experiences" },
-    right: { value: 67, suffix: "%", label: "More qualified rate" },
+    left: { value: 150, suffix: "+", label: "Digitálních zážitků" },
+    right: { value: 67, suffix: " %", label: "Kvalifikovanějších leadů" },
   },
   {
     name: "Monosen",
     logo: `${IMG}pN15qcho0Pl4bX7FkEn7HkSaXik.svg?width=120&height=16`,
     logoW: 120,
     logoH: 16,
-    left: { value: 200, suffix: "+", label: "Eng. user interfaces" },
-    right: { value: 75, suffix: "%", label: "Higher retention rate" },
+    left: { value: 200, suffix: "+", label: "Uživatelských rozhraní" },
+    right: { value: 75, suffix: " %", label: "Vyšší retence uživatelů" },
   },
   {
     name: "Overcut",
     logo: `${IMG}J521yxWmVF2ZDxPBDZjqj7Z3kI.svg?width=74&height=21`,
     logoW: 74,
     logoH: 21,
-    left: { value: 150, suffix: "+", label: "Innovative solutions" },
-    right: { value: 80, suffix: "%", label: "Conv. rate optimization" },
+    left: { value: 150, suffix: "+", label: "Inovativních řešení" },
+    right: { value: 80, suffix: " %", label: "Optimalizace konverzí" },
   },
 ];
 
 export type Skill = { left: string; right: string; img: string };
 
 export const SKILLS: Skill[] = [
-  { left: "Creative", right: "Direction", img: `${IMG}tPZAvYJYJ7Rm08ZyJ3kTzmG1gIg.png?width=900&height=900` },
+  { left: "Kreativní", right: "Vedení", img: `${IMG}tPZAvYJYJ7Rm08ZyJ3kTzmG1gIg.png?width=900&height=900` },
   { left: "UI/UX", right: "Design", img: `${IMG}vXdEBSjbjZWjn6CW8R7z9BVIUdc.png?width=680&height=900` },
-  { left: "Branding", right: "Strategy", img: `${IMG}aZo97IXqP4X0kS3P9MoYOEV3hCo.png?width=680&height=900` },
-  { left: "Video", right: "Editing", img: `${IMG}gmRo5dtINgQKt14iYv8SNpubVpc.png?width=680&height=900` },
+  { left: "Branding", right: "Strategie", img: `${IMG}aZo97IXqP4X0kS3P9MoYOEV3hCo.png?width=680&height=900` },
+  { left: "Video", right: "Střih", img: `${IMG}gmRo5dtINgQKt14iYv8SNpubVpc.png?width=680&height=900` },
   { left: "Motion", right: "Design", img: `${IMG}oc7ObmaWyBI5sgBFIo7Xnp9oGCQ.png?width=720&height=900` },
-  { left: "Digital", right: "Marketing", img: `${IMG}SvB4Wd4za9gsOb6K5UiL4Tv94.png?width=680&height=900` },
+  { left: "Digitální", right: "Marketing", img: `${IMG}SvB4Wd4za9gsOb6K5UiL4Tv94.png?width=680&height=900` },
 ];
 
 export type Testimonial = {
@@ -144,23 +144,23 @@ export type Testimonial = {
 export const TESTIMONIALS: Testimonial[] = [
   {
     quote:
-      "Vrstva rebuilt our product story from the ground up. What used to feel generic now feels unmistakably ours — and the numbers moved with it.",
-    name: "Neatian Meyal",
-    role: "Head of Product, SaaS Company",
+      "Vrstva nám přestavěla celý příběh produktu od základu. Co dřív působilo genericky, je teď nezaměnitelně naše — a čísla se hnula spolu s tím.",
+    name: "Adam Kolář",
+    role: "Produktový ředitel, SaaS firma",
     img: `${IMG}CvnUgsF4wSNCHF2JQoRDj2A1ads.jpg?width=1400&height=2100`,
   },
   {
     quote:
-      "The team gets motion. Every interaction earns its place and nothing feels bolted on. Our launch felt like an event, not a page.",
+      "Tým rozumí pohybu. Každá interakce má svůj smysl a nic nepůsobí nalepeně. Náš launch vypadal jako událost, ne jen jako další stránka.",
     name: "Karel Dohnal",
-    role: "Founder, Fintech Startup",
+    role: "Zakladatel, fintech startup",
     img: `${IMG}tPZAvYJYJ7Rm08ZyJ3kTzmG1gIg.png?width=1200&height=1200`,
   },
   {
     quote:
-      "Fast, sharp and genuinely strategic. Vrstva treated our brand like a system, not a logo — and it shows on every screen.",
+      "Rychlé, ostré a opravdu strategické. Vrstva pracovala s naší značkou jako se systémem, ne jako s logem — a je to vidět na každé obrazovce.",
     name: "Lucie Marešová",
-    role: "CMO, E-commerce Brand",
+    role: "Marketingová ředitelka, e-shop",
     img: `${IMG}aZo97IXqP4X0kS3P9MoYOEV3hCo.png?width=911&height=1199`,
   },
 ];
@@ -174,63 +174,63 @@ export type Post = {
 
 export const JOURNAL: Post[] = [
   {
-    slug: "systems-not-logos",
-    category: "Branding //",
-    title: "Why Strong Brands Are Built on Systems, Not Logos",
+    slug: "systemy-ne-loga",
+    category: "branding //",
+    title: "Proč silné značky stojí na systémech, ne na logu",
     img: `${IMG}bNjaBzh6o5JZ2KBOPZTP06KkFM.png?width=1060&height=1058`,
   },
   {
-    slug: "motion-product-clarity",
-    category: "Motion // animation",
-    title: "How Motion Design Improves Product Clarity",
+    slug: "motion-srozumitelnost",
+    category: "motion // animace",
+    title: "Jak motion design zlepšuje srozumitelnost produktu",
     img: `${IMG}P6oFcbPOazBjjX0KwsXPEcxCjjc.png?width=846&height=1058`,
   },
   {
-    slug: "vision-to-execution",
-    category: "marketing // strategy",
-    title: "From Vision to Execution: Aligning Teams Through Design",
+    slug: "vize-k-realizaci",
+    category: "marketing // strategie",
+    title: "Od vize k realizaci: jak design sjednotí tým",
     img: `${IMG}105xqT6vhMxzOfnrFGFsrt9MWag.png?width=790&height=1046`,
   },
 ];
 
 export const PROCESS = [
-  { title: "Discover", body: "Research provides the insight that shapes the project." },
-  { title: "Define & design", body: "Insight becomes strategy — and makes your product visible." },
-  { title: "Launch & scale", body: "We ensure a smooth launch and help the brand keep growing." },
+  { title: "Objevujeme", body: "Výzkum přináší poznatky, které formují celý projekt." },
+  { title: "Definujeme & navrhujeme", body: "Z poznatků vzniká strategie — a váš produkt začne být vidět." },
+  { title: "Spouštíme & škálujeme", body: "Zajistíme hladký start a pomáháme značce dál růst." },
 ];
 
 export const FAQ = [
   {
-    q: "What services does Vrstva specialize in?",
-    a: "Brand strategy, identity, UI/UX design, motion, and front-end development — an end-to-end team for tech brands that want more than a template.",
+    q: "Na co se ve Vrstvě specializujeme?",
+    a: "Na strategii značky, vizuální identitu, UI/UX design, motion a front-endový vývoj — tým, který vás provede od nápadu až po hotový produkt, ne jen po šablonu.",
   },
   {
-    q: "Do you work with startups or enterprise clients?",
-    a: "Both. We move fast enough for early-stage startups and structured enough for scaling companies and established brands.",
+    q: "Pracujete se startupy, nebo s velkými firmami?",
+    a: "S oběma. Dokážeme jet dost rychle pro startupy v rané fázi a zároveň dost strukturovaně pro rostoucí firmy a zavedené značky.",
   },
   {
-    q: "What industries do you usually work with?",
-    a: "Mostly technology, SaaS, fintech and consumer brands — but the process stays the same wherever there is a story worth telling clearly.",
+    q: "S jakými obory nejčastěji pracujete?",
+    a: "Hlavně technologie, SaaS, fintech a spotřebitelské značky — ale proces zůstává stejný všude, kde je příběh, který stojí za to vyprávět srozumitelně.",
   },
   {
-    q: "What is your design process like?",
-    a: "A structured but flexible flow: discover, define & design, then launch & scale — with you in the room at every step.",
+    q: "Jak vypadá váš návrhový proces?",
+    a: "Strukturovaný, ale flexibilní: objevujeme, definujeme & navrhujeme a poté spouštíme & škálujeme — a vy jste u toho v každém kroku.",
   },
   {
-    q: "How long does a project usually take?",
-    a: "A focused landing page runs 3–4 weeks; a full site or product identity typically takes 6–10 weeks depending on scope.",
+    q: "Jak dlouho projekt obvykle trvá?",
+    a: "Zaměřená landing page zabere 3–4 týdny; kompletní web nebo produktová identita obvykle 6–10 týdnů podle rozsahu.",
   },
 ];
 
 export const STATS = [
-  { value: "9+", label: "years" },
-  { value: "500+", label: "projects" },
-  { value: "99%", label: "client satisfaction" },
+  { value: "9+", label: "let na trhu" },
+  { value: "500+", label: "projektů" },
+  { value: "99 %", label: "spokojenost klientů" },
 ];
 
 export const NAV_LINKS = [
-  { label: "Work", id: "#work" },
-  { label: "Company", id: "#skills" },
-  { label: "Journal", id: "#journal" },
-  { label: "FAQ", id: "#faq" },
+  { label: "Práce", id: "#work" },
+  { label: "Studio", id: "#skills" },
+  { label: "Žurnál", id: "#journal" },
+  { label: "Dotazy", id: "#faq" },
 ];

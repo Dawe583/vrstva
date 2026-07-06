@@ -57,20 +57,20 @@ export default function Skills() {
     <section id="skills" className="mx-auto max-w-[1320px] px-5 py-24 md:py-32">
       <Reveal>
         <h2 className="text-center font-display text-[clamp(40px,8vw,110px)] text-paper">
-          our core skills
+          co umíme
         </h2>
       </Reveal>
 
       <Reveal delay={0.1}>
         <div className="mx-auto mt-10 flex max-w-[900px] flex-col gap-6 text-[15px] leading-relaxed text-paper md:flex-row md:justify-between">
           <p className="max-w-[34ch]">
-            Creative and digital solutions designed for modern brands and tech
-            startups.
+            Kreativní a digitální řešení navržená pro moderní značky a
+            technologické startupy.
           </p>
           <p className="max-w-[42ch] text-mute">
-            We provide creative services that help brands communicate, move
-            faster and stand out — work that supports growth, consistency and
-            lasting brand value.
+            Poskytujeme kreativní služby, které značkám pomáhají komunikovat,
+            zrychlit a odlišit se — práci, jež podporuje růst, konzistenci a
+            dlouhodobou hodnotu značky.
           </p>
         </div>
       </Reveal>

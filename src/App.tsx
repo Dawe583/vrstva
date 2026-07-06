@@ -1,3 +1,4 @@
+import { MotionConfig } from "motion/react";
 import { useLenis } from "./lenis";
 import Nav from "./components/Nav";
 import Hero from "./components/Hero";
@@ -15,12 +16,16 @@ import Footer from "./components/Footer";
  * Vrstva — landing postavená podle reference x-axis.
  * Struktura sekcí i pohyb (portálový hero, dopočítané statistiky, reveal
  * dovedností, odkrývací proces, CTA) odpovídají předloze, značka je Vrstva.
+ *
+ * MotionConfig reducedMotion="never" => všechny animace a efekty běží na
+ * VŠECH zařízeních bez výjimky (vědomé, opakované přání uživatele), i když
+ * má systém zapnuté „omezit pohyb".
  */
 export default function App() {
   useLenis();
 
   return (
-    <>
+    <MotionConfig reducedMotion="never">
       <Nav />
       <main>
         <Hero />
@@ -34,6 +39,6 @@ export default function App() {
         <Cta />
       </main>
       <Footer />
-    </>
+    </MotionConfig>
   );
 }

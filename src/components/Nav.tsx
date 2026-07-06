@@ -52,7 +52,7 @@ export default function Nav() {
           onClick={() => scrollToId("#cta")}
           className="rounded-full border border-line bg-ink/40 px-5 py-2 text-[13px] text-paper transition-colors hover:border-paper/40 hover:bg-paper hover:text-ink"
         >
-          Contact
+          Kontakt
         </button>
       </nav>
     </motion.header>

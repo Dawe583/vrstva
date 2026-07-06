@@ -10,13 +10,13 @@ let lenis: Lenis | null = null;
  */
 export function useLenis() {
   useEffect(() => {
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduce) return;
-
+    // Plynulý scroll běží ZÁMĚRNĚ i při systémovém „omezit pohyb" a i na
+    // dotykových zařízeních (syncTouch), aby scroll-driven efekty jely všude.
     lenis = new Lenis({
       duration: 1.1,
       easing: (t) => 1 - Math.pow(2, -10 * t),
       smoothWheel: true,
+      syncTouch: true,
       touchMultiplier: 1.5,
     });
 

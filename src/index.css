@@ -115,16 +115,6 @@ body {
   will-change: transform, opacity;
 }
 
-/* Přístupnost: méně pohybu na přání systému */
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.001ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.001ms !important;
-  }
-  .marquee-track {
-    animation: none !important;
-  }
-}
+/* Poznámka: reduce-motion přepínač ZÁMĚRNĚ nepoužíváme — efekty a animace
+   mají na výslovné a opakované přání uživatele běžet na všech zařízeních
+   bez výjimky. */
