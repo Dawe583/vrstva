@@ -1,77 +1,108 @@
-import { IconStarFilled, IconQuote } from "@tabler/icons-react";
-import SplitText from "./SplitText";
-import Avatar from "./Avatar";
+import { useState } from "react";
+import { AnimatePresence, motion } from "motion/react";
+import Reveal from "./Reveal";
+import { TESTIMONIALS } from "../site";
 
-const QUOTES = [
-  {
-    text: "Nový web nám během tří měsíců zdvojnásobil počet poptávek. Spolupráce byla přesná a rychlá.",
-    name: "Tereza Vlachová",
-    role: "Marketingová ředitelka, Bystrá",
-    seed: 1,
-  },
-  {
-    text: "Konečně web, který vypadá jako my. Vrstva pochopila naši značku dřív než my sami.",
-    name: "Ondřej Roubal",
-    role: "Majitel, Roubal a syn",
-    seed: 0,
-  },
-  {
-    text: "Rezervace nám vzlétly. A hlavně — hosté píšou, že web je zážitek sám o sobě.",
-    name: "Petra Malá",
-    role: "Provozní, hotel Mezanin",
-    seed: 3,
-  },
-  {
-    text: "Rychlost, detail a nula výmluv. Přesně tým, se kterým chcete stavět značku.",
-    name: "Jan Kotek",
-    role: "Zakladatel, Atelier HM",
-    seed: 2,
-  },
-];
+const EASE = [0.16, 1, 0.3, 1] as const;
 
-function Card({ q }: { q: (typeof QUOTES)[number] }) {
+function ArrowBtn({
+  dir,
+  onClick,
+}: {
+  dir: "left" | "right";
+  onClick: () => void;
+}) {
   return (
-    <figure className="mx-3 flex w-[85vw] shrink-0 flex-col justify-between rounded-2xl border border-line bg-ink2/50 p-7 sm:w-[440px] md:p-8">
-      <div>
-        <IconQuote size={30} stroke={1.4} className="mb-4 text-accent" />
-        <div className="mb-4 flex gap-1">
-          {Array.from({ length: 5 }).map((_, i) => (
-            <IconStarFilled key={i} size={15} className="text-accent" />
-          ))}
-        </div>
-        <blockquote className="font-display text-xl font-medium leading-snug tracking-tight md:text-2xl">
-          „{q.text}"
-        </blockquote>
-      </div>
-      <figcaption className="mt-8 flex items-center gap-3">
-        <Avatar name={q.name} seed={q.seed} className="h-11 w-11 text-sm" />
-        <div className="text-sm">
-          <div className="text-paper">{q.name}</div>
-          <div className="text-mute">{q.role}</div>
-        </div>
-      </figcaption>
-    </figure>
+    <button
+      onClick={onClick}
+      aria-label={dir === "left" ? "Previous" : "Next"}
+      className="grid h-12 w-12 place-items-center rounded-full border border-mute2/60 text-mute transition-colors hover:border-paper hover:text-paper"
+    >
+      <svg
+        viewBox="0 0 16 16"
+        className={`h-4 w-4 ${dir === "right" ? "rotate-180" : ""}`}
+        fill="none"
+      >
+        <path
+          d="M10 3 5 8l5 5"
+          stroke="currentColor"
+          strokeWidth="1.25"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    </button>
   );
 }
 
-/** Reference jako živý pás karet (auto-scroll, pauza na hover). */
 export default function Testimonials() {
-  const row = [...QUOTES, ...QUOTES];
+  const [i, setI] = useState(0);
+  const t = TESTIMONIALS[i];
+  const go = (d: number) =>
+    setI((p) => (p + d + TESTIMONIALS.length) % TESTIMONIALS.length);
+
   return (
-    <section aria-label="Reference" className="overflow-hidden border-y border-line py-20 md:py-28">
-      <div className="mx-auto mb-12 max-w-[1400px] px-6 md:px-10">
-        <span className="text-sm uppercase tracking-[0.16em] text-accent">Reference</span>
-        <SplitText
-          text="Co říkají klienti."
-          className="mt-4 font-display text-4xl font-medium tracking-tighter md:text-6xl"
-        />
+    <section className="relative overflow-hidden py-24 md:py-32">
+      {/* soustředné kruhy na pozadí */}
+      <div className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+        {[60, 42, 26].map((v) => (
+          <div
+            key={v}
+            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border border-line2"
+            style={{ width: `${v}vw`, height: `${v}vw` }}
+          />
+        ))}
       </div>
-      <div className="group flex overflow-hidden">
-        <div className="marquee-track flex w-max [animation-duration:40s] group-hover:[animation-play-state:paused]">
-          {row.map((q, i) => (
-            <Card key={i} q={q} />
-          ))}
-        </div>
+
+      <div className="relative mx-auto max-w-[1100px] px-5">
+        <Reveal>
+          <div className="overflow-hidden rounded-2xl border border-line bg-ink">
+            <div className="grid md:grid-cols-[0.85fr_1.15fr]">
+              <div className="relative aspect-[4/5] md:aspect-auto">
+                <AnimatePresence mode="wait">
+                  <motion.img
+                    key={t.img}
+                    src={t.img}
+                    alt=""
+                    initial={{ opacity: 0, scale: 1.06 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.6, ease: EASE }}
+                    className="absolute inset-0 h-full w-full object-cover"
+                  />
+                </AnimatePresence>
+              </div>
+
+              <div className="flex flex-col justify-between gap-10 p-8 md:p-12">
+                <AnimatePresence mode="wait">
+                  <motion.blockquote
+                    key={t.quote}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -12 }}
+                    transition={{ duration: 0.5, ease: EASE }}
+                    className="font-display text-[clamp(22px,2.4vw,32px)] font-normal normal-case leading-[1.2] tracking-normal text-paper"
+                  >
+                    "{t.quote}"
+                  </motion.blockquote>
+                </AnimatePresence>
+
+                <div className="flex items-end justify-between">
+                  <div>
+                    <div className="font-display text-lg normal-case tracking-normal text-paper">
+                      {t.name}
+                    </div>
+                    <div className="mt-1 text-[13px] text-mute">{t.role}</div>
+                  </div>
+                  <div className="flex gap-3">
+                    <ArrowBtn dir="left" onClick={() => go(-1)} />
+                    <ArrowBtn dir="right" onClick={() => go(1)} />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Reveal>
       </div>
     </section>
   );

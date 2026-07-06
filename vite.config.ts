@@ -11,8 +11,6 @@ export default defineConfig({
         manualChunks: {
           react: ["react", "react-dom"],
           motion: ["motion"],
-          gsap: ["gsap"],
-          webgl: ["ogl"],
         },
       },
     },

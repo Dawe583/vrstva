@@ -1,52 +1,41 @@
 import { useState } from "react";
-import { Plus } from "@phosphor-icons/react";
-import SplitText from "./SplitText";
 import Reveal from "./Reveal";
+import { FAQ } from "../site";
 
-const ITEMS = [
-  {
-    q: "Kolik stojí nový web?",
-    a: "Cena vychází z rozsahu. Jednoduchá prezentace startuje kolem 60 tisíc, komplexní web s vlastním designem a napojením na systémy se pohybuje výš. Vždy dostanete pevnou nabídku předem, žádná překvapení.",
-  },
-  {
-    q: "Jak dlouho tvorba trvá?",
-    a: "Prezentační web bývá hotový za 4 až 6 týdnů, rozsáhlejší projekty za 8 až 12 týdnů. Termín potvrdíme hned po úvodní analýze.",
-  },
-  {
-    q: "Postaráte se i o texty a fotky?",
-    a: "Ano. Umíme dodat copywriting, art direction i produkci fotografií. Nebo navážeme na podklady, které už máte.",
-  },
-  {
-    q: "Co web po spuštění?",
-    a: "Nabízíme správu, měření výkonu a průběžnou optimalizaci. Web není hotový spuštěním, tam teprve začíná vydělávat.",
-  },
-];
-
-function Item({ q, a }: { q: string; a: string }) {
-  const [open, setOpen] = useState(false);
+function Item({
+  q,
+  a,
+  open,
+  onToggle,
+}: {
+  q: string;
+  a: string;
+  open: boolean;
+  onToggle: () => void;
+}) {
   return (
-    <div className="border-t border-line">
+    <div className="border-t border-line last:border-b">
       <button
-        onClick={() => setOpen((o) => !o)}
-        aria-expanded={open}
-        className="flex w-full items-center justify-between gap-6 py-7 text-left md:py-8"
+        onClick={onToggle}
+        className="flex w-full items-center justify-between gap-6 py-7 text-left"
       >
-        <span className="font-display text-xl font-medium tracking-tight md:text-2xl">{q}</span>
-        <Plus
-          size={26}
-          weight="light"
-          className={`shrink-0 text-accent transition-transform duration-500 ${
-            open ? "rotate-45" : ""
-          }`}
-        />
+        <span className="font-display text-[clamp(18px,2vw,24px)] normal-case tracking-normal text-paper">
+          {q}
+        </span>
+        <span className="relative grid h-6 w-6 shrink-0 place-items-center">
+          <span className="absolute h-[1.5px] w-4 bg-paper" />
+          <span
+            className={`absolute h-4 w-[1.5px] bg-paper transition-transform duration-500 ${
+              open ? "rotate-90" : ""
+            }`}
+          />
+        </span>
       </button>
-      {/* grid 0fr->1fr: plynulé rozbalení bez měření výšky, běží všude */}
-      <div
-        className="grid transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]"
-        style={{ gridTemplateRows: open ? "1fr" : "0fr" }}
-      >
-        <div className="overflow-hidden">
-          <p className="max-w-[62ch] pb-8 leading-relaxed text-mute">{a}</p>
+      <div className={`acc-panel ${open ? "open" : ""}`}>
+        <div className="acc-inner">
+          <p className="max-w-[70ch] pb-7 text-[15px] leading-relaxed text-mute">
+            {a}
+          </p>
         </div>
       </div>
     </div>
@@ -54,26 +43,34 @@ function Item({ q, a }: { q: string; a: string }) {
 }
 
 export default function Faq() {
+  const [open, setOpen] = useState(0);
+
   return (
-    <section id="faq" className="py-28 md:py-40">
-      <div className="mx-auto grid max-w-[1400px] grid-cols-1 gap-12 px-6 md:grid-cols-12 md:px-10">
-        <div className="md:col-span-4">
-          <SplitText
-            text="Časté dotazy"
-            className="font-display text-4xl font-medium tracking-tighter md:text-6xl"
-          />
-          <Reveal delay={0.15}>
-            <p className="mt-6 max-w-[34ch] text-mute">
-              Nenašli jste odpověď? Napište nám, rádi vše probereme.
-            </p>
-          </Reveal>
-        </div>
-        <div className="md:col-span-7 md:col-start-6">
-          {ITEMS.map((it) => (
-            <Item key={it.q} {...it} />
+    <section id="faq" className="mx-auto max-w-[1000px] px-5 py-24 md:py-32">
+      <div className="mb-14 text-center">
+        <Reveal>
+          <h2 className="font-display text-[clamp(44px,9vw,120px)] text-paper">
+            FAQ
+          </h2>
+        </Reveal>
+        <Reveal delay={0.08}>
+          <p className="mt-4 text-[15px] text-mute">Clear answers. No guesswork.</p>
+        </Reveal>
+      </div>
+
+      <Reveal>
+        <div>
+          {FAQ.map((f, i) => (
+            <Item
+              key={f.q}
+              q={f.q}
+              a={f.a}
+              open={open === i}
+              onToggle={() => setOpen(open === i ? -1 : i)}
+            />
           ))}
         </div>
-      </div>
+      </Reveal>
     </section>
   );
 }

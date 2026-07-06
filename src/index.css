@@ -1,75 +1,72 @@
 @import "tailwindcss";
 
-/* Self-hosted fonts (Fontshare, staženo lokálně) */
-@font-face {
-  font-family: "Clash Display";
-  src: url("/fonts/clashdisplay-500.woff2") format("woff2");
-  font-weight: 500;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Clash Display";
-  src: url("/fonts/clashdisplay-600.woff2") format("woff2");
-  font-weight: 600;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Satoshi";
-  src: url("/fonts/satoshi-400.woff2") format("woff2");
-  font-weight: 400;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Satoshi";
-  src: url("/fonts/satoshi-500.woff2") format("woff2");
-  font-weight: 500;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Satoshi";
-  src: url("/fonts/satoshi-700.woff2") format("woff2");
-  font-weight: 700;
-  font-display: swap;
-}
+/* ==========================================================================
+   Vrstva — vizuální systém postavený podle reference x-axis.
+   Jedno tmavé téma, jeden oranžový akcent, Oswald (nadpisy) + Geist (text).
+   ========================================================================== */
 
 @theme {
-  --font-display: "Clash Display", "Satoshi", ui-sans-serif, sans-serif;
-  --font-sans: "Satoshi", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Oswald", ui-sans-serif, sans-serif;
+  --font-sans: "Geist", ui-sans-serif, system-ui, sans-serif;
 
-  /* Tmavé editorial tokeny. Jedno téma pro celou stránku, jeden akcent. */
-  --color-ink: #0d0d0e;
-  --color-ink2: #151517;
-  --color-ink3: #1c1c1f;
-  --color-paper: #f2f1ec;
-  --color-mute: #93918a;
-  --color-muteb: #c9c7c0;
-  --color-line: rgb(242 241 236 / 0.12);
-  --color-line2: rgb(242 241 236 / 0.06);
-  --color-accent: #e8562a;
-  --color-accent-soft: #f0744e;
-  --color-cool: #3a4d6b;
+  /* Barevné tokeny 1:1 s referencí */
+  --color-ink: #0d0d0d; /* pozadí / karty */
+  --color-line: #242424; /* výrazný okraj */
+  --color-line2: #1a1a1a; /* jemný okraj */
+  --color-paper: #ffffff; /* hlavní text */
+  --color-mute: #a6a6a6; /* sekundární text */
+  --color-mute2: #808080; /* terciární text */
+  --color-accent: #ff531a; /* akcent */
 }
 
 html {
   background: var(--color-ink);
+  scroll-behavior: auto;
 }
 
 body {
   background: var(--color-ink);
   color: var(--color-paper);
   font-family: var(--font-sans);
+  font-weight: 400;
   -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
   overflow-x: clip;
 }
 
 ::selection {
   background: var(--color-accent);
-  color: var(--color-ink);
+  color: #fff;
 }
 
-/* Marquee běží na všech zařízeních (vědomé přání uživatele). */
+/* Oswald nadpisy — kondenzované, verzálky, sevřený leading */
+.font-display {
+  font-family: var(--font-display);
+  font-weight: 500;
+  text-transform: uppercase;
+  line-height: 0.92;
+  letter-spacing: -0.01em;
+}
+
+/* Malé "eyebrow" popisky (kategorie, meta) */
+.eyebrow {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  letter-spacing: 0.02em;
+  text-transform: lowercase;
+  color: var(--color-mute);
+}
+
+/* Tenká horizontální linka sekce */
+.hairline {
+  height: 1px;
+  width: 100%;
+  background: var(--color-line);
+}
+
+/* ==== Marquee (běžící pás log) ==== */
 .marquee-track {
-  animation: marquee 30s linear infinite;
+  animation: marquee 32s linear infinite;
 }
 @keyframes marquee {
   to {
@@ -77,86 +74,48 @@ body {
   }
 }
 
-/* Pomalý drift auroru v živém pozadí */
-.aurora-drift {
-  animation: aurora 18s ease-in-out infinite alternate;
+/* ==== Reveal na hover — maska pro písmena (featured works / journal) ==== */
+.cw-mask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  white-space: pre;
 }
-@keyframes aurora {
-  from {
-    transform: translate3d(0, 0, 0) scale(1);
-  }
-  to {
-    transform: translate3d(6%, -4%, 0) scale(1.15);
-  }
+.cw-col {
+  transform: translateY(0);
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
 }
-
-/* Marquee opačným směrem (druhý pás log / referencí) */
-.marquee-track-rev {
-  animation: marquee-rev 34s linear infinite;
-}
-@keyframes marquee-rev {
-  from {
-    transform: translateX(-50%);
-  }
-  to {
-    transform: translateX(0);
-  }
+.group:hover .cw-col {
+  transform: translateY(-50%);
 }
 
-/* Jemné vznášení (ilustrace, odznaky) */
-.float-slow {
-  animation: floaty 7s ease-in-out infinite;
+/* ==== FAQ accordion ==== */
+.acc-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
-@keyframes floaty {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
+.acc-panel.open {
+  grid-template-rows: 1fr;
 }
-
-/* Scroll indikátor (linka v heru) */
-@keyframes sd {
-  0%, 100% {
-    transform: scaleY(0.4);
-  }
-  50% {
-    transform: scaleY(1);
-  }
+.acc-inner {
+  overflow: hidden;
 }
 
-/* ===== Mesh dlaždice (animované náhrady fotek) ===== */
-@keyframes mt-drift1 {
-  from { transform: translate(-50%, -50%) translate3d(0, 0, 0) scale(1); }
-  to   { transform: translate(-50%, -50%) translate3d(14%, -10%, 0) scale(1.25); }
-}
-@keyframes mt-drift2 {
-  from { transform: translate(-50%, -50%) translate3d(0, 0, 0) scale(1.1); }
-  to   { transform: translate(-50%, -50%) translate3d(-12%, 12%, 0) scale(0.9); }
-}
-@keyframes mt-drift3 {
-  from { transform: translate(-50%, -50%) translate3d(0, 0, 0) scale(0.95); }
-  to   { transform: translate(-50%, -50%) translate3d(10%, 14%, 0) scale(1.2); }
-}
-@keyframes mt-pulse {
-  0%, 100% { transform: scale(1); opacity: 0.5; }
-  50%      { transform: scale(1.06); opacity: 0.9; }
-}
-@keyframes mt-slide {
-  from { transform: translate(0, 0); }
-  to   { transform: translate(-25px, -25px); }
-}
-@keyframes mt-wave {
-  0%, 100% { transform: translateY(var(--wy, 0)) scaleY(1); }
-  50%      { transform: translateY(calc(var(--wy, 0px) - 8px)) scaleY(1.15); }
-}
-@keyframes mt-spin {
-  to { transform: rotate(360deg); }
+/* ==== CTA — rotující linky tvořící "hvězdici" ==== */
+.cta-line {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--color-accent);
+  transform-origin: center;
+  will-change: transform, opacity;
 }
 
-/* Přístupnost: kdo si přeje méně pohybu, dostane klid i u inline animací
-   (mesh dlaždice, motivy) — !important přebije i inline animation. */
+/* Přístupnost: méně pohybu na přání systému */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -165,90 +124,7 @@ body {
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
   }
-}
-
-/* ===== Vlastní kurzor ===== */
-/* Nativní kurzor skryjeme jen když je aktivní vlastní (třída na <html>) a jde o myš */
-@media (pointer: fine) {
-  html.has-cursor,
-  html.has-cursor * {
-    cursor: none;
-  }
-}
-.cursor-dot,
-.cursor-ring {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 95;
-  pointer-events: none;
-  border-radius: 999px;
-  will-change: transform;
-}
-.cursor-dot {
-  width: 7px;
-  height: 7px;
-  margin: -3.5px 0 0 -3.5px;
-  background: var(--color-paper);
-  box-shadow: 0 0 0 1px rgb(13 13 14 / 0.35);
-}
-.cursor-ring {
-  width: 42px;
-  height: 42px;
-  margin: -21px 0 0 -21px;
-  border: 1.5px solid rgb(242 241 236 / 0.75);
-  transition: width 0.32s cubic-bezier(0.16, 1, 0.3, 1),
-    height 0.32s cubic-bezier(0.16, 1, 0.3, 1),
-    margin 0.32s cubic-bezier(0.16, 1, 0.3, 1),
-    background 0.32s, border-color 0.32s, opacity 0.32s;
-}
-.cursor-ring .cur-label {
-  position: absolute;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  font-family: var(--font-sans);
-  font-size: 11px;
-  letter-spacing: 0.03em;
-  color: var(--color-ink);
-  opacity: 0;
-  transition: opacity 0.3s;
-}
-/* stav: hover nad odkazem/tlačítkem */
-html.cur-hover .cursor-ring {
-  width: 64px;
-  height: 64px;
-  margin: -32px 0 0 -32px;
-  background: rgb(242 241 236 / 0.14);
-}
-/* stav: hover nad médiem (obrázek/projekt) => popisek "Zobrazit" */
-html.cur-view .cursor-ring {
-  width: 92px;
-  height: 92px;
-  margin: -46px 0 0 -46px;
-  background: var(--color-accent);
-  border-color: transparent;
-  mix-blend-mode: normal;
-}
-html.cur-view .cursor-ring .cur-label {
-  opacity: 1;
-}
-html.cur-view .cursor-dot {
-  opacity: 0;
-}
-
-/* Kinetický wordmark v patičce – reaguje na kurzor přes CSS proměnnou */
-.kinetic-word span {
-  display: inline-block;
-  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
-    color 0.4s ease;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .marquee-track,
-  .marquee-track-rev,
-  .aurora-drift,
-  .float-slow {
+  .marquee-track {
     animation: none !important;
   }
 }

@@ -1,105 +1,117 @@
-import { useEffect, useRef, useState } from "react";
-import { motion, AnimatePresence } from "motion/react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { IconArrowUpRight } from "@tabler/icons-react";
-import MeshTile from "./MeshTile";
-import CaseStudy from "./CaseStudy";
-import { EASE } from "../motion";
-import { PROJECTS, type Project } from "../content";
+import Reveal from "./Reveal";
+import { PROJECTS, type Project } from "../site";
 
-gsap.registerPlugin(ScrollTrigger);
-
-/** Horizontal scroll-hijack (desktop), vertikální stack na mobilu.
-    Klik na projekt otevře hloubkový case study. */
-export default function Work() {
-  const wrap = useRef<HTMLElement>(null);
-  const track = useRef<HTMLDivElement>(null);
-  const [active, setActive] = useState<Project | null>(null);
-
-  useEffect(() => {
-    if (!wrap.current || !track.current) return;
-    const mm = gsap.matchMedia();
-    mm.add("(min-width: 768px)", () => {
-      const distance = track.current!.scrollWidth - window.innerWidth;
-      gsap.to(track.current, {
-        x: -distance,
-        ease: "none",
-        scrollTrigger: {
-          trigger: wrap.current,
-          start: "top top",
-          end: () => `+=${distance}`,
-          pin: true,
-          scrub: 1,
-          invalidateOnRefresh: true,
-        },
-      });
-    });
-    return () => mm.revert();
-  }, []);
-
+/** Nadpis „featured / works" — dvě řádky velkých verzálek. */
+function Heading() {
   return (
-    <section id="prace" ref={wrap} className="relative overflow-hidden py-24 md:py-0">
-      <div
-        ref={track}
-        className="flex flex-col gap-16 px-6 md:h-[100dvh] md:w-max md:flex-row md:items-center md:gap-[8vw] md:px-10"
-      >
-        <div className="md:w-[36vw] md:shrink-0">
-          <span className="text-sm uppercase tracking-[0.16em] text-accent">Portfolio</span>
-          <h2 className="mt-4 font-display text-5xl font-medium tracking-tighter md:text-7xl">
-            Vybrané projekty
+    <div className="mb-14 md:mb-20">
+      {["featured", "works"].map((w, i) => (
+        <Reveal key={w} delay={i * 0.08}>
+          <h2 className="font-display text-[clamp(56px,13vw,180px)] leading-[0.9] text-paper">
+            {w}
           </h2>
-          <p className="mt-5 max-w-[36ch] text-muteb">
-            Každý projekt začíná otázkou, co má web značce vydělat. Klikni pro celý příběh.
-          </p>
-        </div>
+        </Reveal>
+      ))}
+    </div>
+  );
+}
 
-        {PROJECTS.map((p, i) => (
-          <motion.article
-            key={p.name}
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.7, ease: EASE }}
-            className="group md:w-[52vw] md:shrink-0"
+/** Text s reveal písmen na hover (dvě zrcadlené kopie ve svislé masce). */
+function LetterReveal({ text, className }: { text: string; className?: string }) {
+  return (
+    <span className={className} aria-label={text}>
+      {[...text].map((ch, i) => (
+        <span key={i} className="cw-mask h-[1.1em] leading-[1.1em]" aria-hidden>
+          <span
+            className="cw-col flex flex-col"
+            style={{ transitionDelay: `${i * 16}ms` }}
           >
-            <button
-              onClick={() => setActive(p)}
-              data-cursor="view"
-              className="block w-full text-left"
-              aria-label={`Otevřít case study ${p.name}`}
-            >
-              <div className="relative overflow-hidden rounded-xl">
-                <MeshTile
-                  seed={p.seed}
-                  motif={p.motif}
-                  className="aspect-[15/10] w-full transition-transform duration-[900ms] ease-out group-hover:scale-[1.03]"
-                />
-                <span className="pointer-events-none absolute left-5 top-5 font-display text-sm text-paper/70">
-                  0{i + 1}
-                </span>
-              </div>
-              <div className="mt-5 flex items-baseline justify-between border-t border-line pt-4">
-                <h3 className="flex items-center gap-2 font-display text-2xl font-medium tracking-tight md:text-3xl">
-                  {p.name}
-                  <IconArrowUpRight
-                    size={22}
-                    stroke={1.8}
-                    className="text-accent opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-                  />
-                </h3>
-                <span className="text-sm text-mute">
-                  {p.meta}, {p.year}
-                </span>
-              </div>
-            </button>
-          </motion.article>
-        ))}
+            <span>{ch === " " ? " " : ch}</span>
+            <span>{ch === " " ? " " : ch}</span>
+          </span>
+        </span>
+      ))}
+    </span>
+  );
+}
+
+function Arrow() {
+  return (
+    <span className="relative block h-5 w-5 overflow-hidden">
+      <svg
+        viewBox="0 0 21 21"
+        className="absolute inset-0 h-5 w-5 translate-x-0 translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:-translate-y-full group-hover:translate-x-full"
+        fill="none"
+      >
+        <path
+          d="M20.98 1.17v15.16a1.17 1.17 0 0 1-2.33 0V3.98L1.97 20.66a1.17 1.17 0 1 1-1.65-1.65L17 2.33H4.65a1.17 1.17 0 0 1 0-2.33h15.16c.64 0 1.17.52 1.17 1.17Z"
+          fill="#ff531a"
+        />
+      </svg>
+      <svg
+        viewBox="0 0 21 21"
+        className="absolute inset-0 h-5 w-5 -translate-x-full translate-y-full transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-0 group-hover:translate-y-0"
+        fill="none"
+      >
+        <path
+          d="M20.98 1.17v15.16a1.17 1.17 0 0 1-2.33 0V3.98L1.97 20.66a1.17 1.17 0 1 1-1.65-1.65L17 2.33H4.65a1.17 1.17 0 0 1 0-2.33h15.16c.64 0 1.17.52 1.17 1.17Z"
+          fill="#ff531a"
+        />
+      </svg>
+    </span>
+  );
+}
+
+function Card({ p }: { p: Project }) {
+  return (
+    <a
+      href={`#work`}
+      className="group block"
+      onClick={(e) => e.preventDefault()}
+    >
+      <div className="mb-4 flex items-center justify-between text-[13px] text-mute">
+        <span className="lowercase">{p.category}</span>
+        <span>{p.year}</span>
       </div>
 
-      <AnimatePresence>
-        {active && <CaseStudy project={active} onClose={() => setActive(null)} />}
-      </AnimatePresence>
+      <div className="relative aspect-[16/10] overflow-hidden rounded-xl border border-line">
+        <img
+          src={p.img}
+          alt={p.title}
+          className="h-full w-full object-cover transition-transform duration-[900ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.04]"
+          loading="lazy"
+        />
+        <div className="absolute inset-0 bg-ink/0 transition-colors duration-500 group-hover:bg-ink/10" />
+      </div>
+
+      <div className="mt-4 flex items-start justify-between">
+        <div>
+          <LetterReveal
+            text={p.brand}
+            className="flex text-[13px] lowercase text-mute2"
+          />
+          <LetterReveal
+            text={p.title}
+            className="mt-1 flex font-display text-[22px] text-paper"
+          />
+        </div>
+        <Arrow />
+      </div>
+    </a>
+  );
+}
+
+export default function Work() {
+  return (
+    <section id="work" className="mx-auto max-w-[1320px] px-5 py-24 md:py-32">
+      <Heading />
+      <div className="grid gap-x-6 gap-y-16 md:grid-cols-2">
+        {PROJECTS.map((p) => (
+          <Reveal key={p.slug} amount={0.2}>
+            <Card p={p} />
+          </Reveal>
+        ))}
+      </div>
     </section>
   );
 }

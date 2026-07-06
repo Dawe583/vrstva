@@ -1,30 +1,34 @@
 import { useEffect } from "react";
 import Lenis from "lenis";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
 
 let lenis: Lenis | null = null;
 
 /**
- * Lenis smooth scroll synchronizovaný s GSAP ScrollTriggerem.
- * Běží na VŠECH zařízeních včetně dotyku (vědomé přání uživatele).
+ * Plynulý scroll (Lenis) s vlastní rAF smyčkou. Lenis hýbe reálným scrollem
+ * okna, takže nativní scroll eventy fungují a motion `useScroll` je s ním
+ * synchronizovaný bez dalšího lepidla.
  */
 export function useLenis() {
   useEffect(() => {
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduce) return;
+
     lenis = new Lenis({
-      duration: 1.15,
+      duration: 1.1,
       easing: (t) => 1 - Math.pow(2, -10 * t),
       smoothWheel: true,
-      touchMultiplier: 1.6,
+      touchMultiplier: 1.5,
     });
-    lenis.on("scroll", ScrollTrigger.update);
-    const raf = (time: number) => lenis?.raf(time * 1000);
-    gsap.ticker.add(raf);
-    gsap.ticker.lagSmoothing(0);
+
+    let raf = 0;
+    const loop = (time: number) => {
+      lenis?.raf(time);
+      raf = requestAnimationFrame(loop);
+    };
+    raf = requestAnimationFrame(loop);
+
     return () => {
-      gsap.ticker.remove(raf);
+      cancelAnimationFrame(raf);
       lenis?.destroy();
       lenis = null;
     };
@@ -32,17 +36,8 @@ export function useLenis() {
 }
 
 export function scrollToId(id: string) {
-  if (lenis) lenis.scrollTo(id, { duration: 1.4 });
-  else document.querySelector(id)?.scrollIntoView();
-}
-
-/** Zamkne/odemkne stránkový scroll (pro overlaye, např. case study). */
-export function lockScroll(lock: boolean) {
-  if (lock) {
-    lenis?.stop();
-    document.body.style.overflow = "hidden";
-  } else {
-    lenis?.start();
-    document.body.style.overflow = "";
-  }
+  const el = document.querySelector(id);
+  if (!el) return;
+  if (lenis) lenis.scrollTo(el as HTMLElement, { duration: 1.3, offset: -20 });
+  else el.scrollIntoView({ behavior: "smooth" });
 }

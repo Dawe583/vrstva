@@ -1,197 +1,158 @@
-import { useEffect, useRef, useState } from "react";
-import {
-  motion,
-  useScroll,
-  useTransform,
-  AnimatePresence,
-} from "motion/react";
-import { IconArrowDownRight } from "@tabler/icons-react";
-import MagneticButton from "./MagneticButton";
-import HeroCanvas from "./HeroCanvas";
-import MeshTile from "./MeshTile";
-import { scrollToId } from "../lenis";
-import { EASE, amp } from "../motion";
+import { useRef } from "react";
+import { motion, useScroll, useTransform } from "motion/react";
+import { MEDIA, STATS } from "../site";
 
-const ROTATING = ["pamatují.", "vydělávají.", "odliší.", "posunou dál."];
+const EASE = [0.16, 1, 0.3, 1] as const;
 
-function Line({ text, delay, ready }: { text: string; delay: number; ready: boolean }) {
+/** Perspektivní „silnice" na pozadí — dvě zrcadlené křivky, střední linka
+ *  a soustředné kruhy dole, přesně v duchu reference. */
+function RoadBackground() {
   return (
-    <span className="block overflow-hidden pb-1">
-      <motion.span
-        className="block"
-        initial={{ y: "110%" }}
-        animate={ready ? { y: 0 } : undefined}
-        transition={{ duration: 1, delay, ease: EASE }}
+    <div className="pointer-events-none absolute inset-0 overflow-hidden">
+      {/* střední vertikální linka */}
+      <div className="absolute left-1/2 top-0 h-full w-px -translate-x-1/2 bg-gradient-to-b from-transparent via-line to-transparent" />
+
+      {/* zakřivené „curby" — konvergují k hornímu středu */}
+      <svg
+        className="absolute left-1/2 top-[8%] h-[92%] w-[min(1200px,96vw)] -translate-x-1/2"
+        viewBox="0 0 1000 700"
+        fill="none"
+        preserveAspectRatio="xMidYMax meet"
+        aria-hidden
       >
-        {text}
-      </motion.span>
-    </span>
+        <path
+          d="M470 0 C 250 230 250 470 120 700"
+          stroke="#1a1a1a"
+          strokeWidth="1.5"
+        />
+        <path
+          d="M530 0 C 750 230 750 470 880 700"
+          stroke="#1a1a1a"
+          strokeWidth="1.5"
+        />
+      </svg>
+
+      {/* soustředné kruhy u paty hera */}
+      <div className="absolute bottom-[-46vw] left-1/2 -translate-x-1/2">
+        {[92, 68, 44].map((v) => (
+          <div
+            key={v}
+            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border border-line2"
+            style={{ width: `${v}vw`, height: `${v}vw` }}
+          />
+        ))}
+      </div>
+
+      {/* jemné ztmavení k okrajům */}
+      <div className="absolute inset-0 bg-[radial-gradient(120%_80%_at_50%_10%,transparent_40%,#0d0d0d_100%)]" />
+    </div>
   );
 }
 
-/** Živé pražské hodiny (HH:MM:SS). */
-function Clock() {
-  const [t, setT] = useState("");
-  useEffect(() => {
-    const fmt = () =>
-      new Intl.DateTimeFormat("cs-CZ", {
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit",
-        timeZone: "Europe/Prague",
-      }).format(new Date());
-    setT(fmt());
-    const i = setInterval(() => setT(fmt()), 1000);
-    return () => clearInterval(i);
-  }, []);
-  return (
-    <span className="tabular-nums">
-      {t} <span className="text-mute">Praha</span>
-    </span>
-  );
-}
-
-export default function Hero({ ready }: { ready: boolean }) {
+export default function Hero() {
   const ref = useRef<HTMLElement>(null);
-  const [idx, setIdx] = useState(0);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start start", "end start"],
+  });
 
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
-  const imgY = useTransform(scrollYProgress, [0, 1], ["0%", `${amp(18)}%`]);
-  const fade = useTransform(scrollYProgress, [0, 0.85], [1, 0]);
-  const canvasY = useTransform(scrollYProgress, [0, 1], ["0%", "12%"]);
-
-  useEffect(() => {
-    if (!ready) return;
-    const t = setInterval(() => setIdx((i) => (i + 1) % ROTATING.length), 2600);
-    return () => clearInterval(t);
-  }, [ready]);
+  // „Portálový" zoom videa při scrollu — malé v centru, roste přes celý obraz.
+  const vScale = useTransform(scrollYProgress, [0, 1], [1, 2.7]);
+  const vY = useTransform(scrollYProgress, [0, 1], ["0%", "26%"]);
+  const vRadius = useTransform(scrollYProgress, [0, 1], [18, 0]);
+  const headFade = useTransform(scrollYProgress, [0, 0.55], [1, 0]);
+  const headY = useTransform(scrollYProgress, [0, 0.55], ["0%", "-30%"]);
 
   return (
-    <section id="uvod" ref={ref} className="relative min-h-[100dvh] overflow-hidden">
-      {/* živé WebGL pozadí */}
-      <motion.div style={{ y: canvasY, opacity: fade }} className="absolute inset-0">
-        <HeroCanvas />
-        <div className="absolute inset-0 bg-gradient-to-b from-ink/40 via-transparent to-ink" />
-      </motion.div>
+    <section
+      id="top"
+      ref={ref}
+      className="relative min-h-[150vh] overflow-hidden pt-[128px]"
+    >
+      <RoadBackground />
 
+      {/* Nadpisová vrstva — sticky, aby pod ní video „projelo" */}
       <motion.div
-        style={{ opacity: fade }}
-        className="relative mx-auto grid max-w-[1400px] grid-cols-1 gap-10 px-6 pt-28 md:grid-cols-12 md:px-10 md:pt-32"
+        style={{ opacity: headFade, y: headY }}
+        className="sticky top-[128px] z-[2] mx-auto flex max-w-[1320px] flex-col items-center px-5 text-center"
       >
-        {/* horní meta lišta */}
-        <div className="md:col-span-12">
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={ready ? { opacity: 1, y: 0 } : undefined}
-            transition={{ duration: 0.7, ease: EASE }}
-            className="mb-8 flex flex-wrap items-center justify-between gap-4 text-[13px] text-paper/80"
-          >
-            <span className="inline-flex items-center gap-2.5 rounded-full border border-line bg-ink/30 px-3.5 py-1.5 backdrop-blur">
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-75" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-accent" />
-              </span>
-              Přijímáme projekty na Q4 2026
-            </span>
-            <span className="hidden md:inline">
-              <Clock />
-            </span>
-          </motion.div>
-        </div>
+        <motion.span
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, ease: EASE }}
+          className="mb-5 inline-block rounded-full border border-line bg-ink/40 px-4 py-1.5 text-[12px] uppercase tracking-[0.18em] text-paper"
+        >
+          We are
+        </motion.span>
 
-        <div className="md:col-span-12">
-          <h1 className="font-display text-[13vw] font-medium leading-[0.95] tracking-tighter md:text-[7.5vw]">
-            <Line text="Weby, které si" delay={0.1} ready={ready} />
-            <span className="block overflow-hidden pb-1">
-              <span className="inline-flex flex-wrap items-baseline gap-x-[0.3em]">
-                <motion.span
-                  className="inline-block"
-                  initial={{ y: "110%" }}
-                  animate={ready ? { y: 0 } : undefined}
-                  transition={{ duration: 1, delay: 0.22, ease: EASE }}
-                >
-                  lidé
-                </motion.span>
-                <span className="relative inline-block overflow-hidden text-accent">
-                  <AnimatePresence mode="wait">
-                    <motion.span
-                      key={idx}
-                      className="inline-block"
-                      initial={{ y: "100%" }}
-                      animate={{ y: 0 }}
-                      exit={{ y: "-110%" }}
-                      transition={{ duration: 0.6, ease: EASE }}
-                    >
-                      {ROTATING[idx]}
-                    </motion.span>
-                  </AnimatePresence>
-                </span>
-              </span>
+        <h1 className="font-display text-[clamp(72px,17vw,220px)] text-paper">
+          {["Creative", "Studio"].map((word, i) => (
+            <span key={word} className="block overflow-hidden">
+              <motion.span
+                className="block"
+                initial={{ y: "110%" }}
+                animate={{ y: 0 }}
+                transition={{ duration: 1, delay: 0.1 + i * 0.12, ease: EASE }}
+              >
+                {word}
+              </motion.span>
             </span>
-          </h1>
-        </div>
+          ))}
+        </h1>
 
-        <motion.div
-          className="order-2 md:order-1 md:col-span-5 md:self-end md:pb-16"
-          initial={{ opacity: 0, y: 24 }}
-          animate={ready ? { opacity: 1, y: 0 } : undefined}
+        <motion.p
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.5, ease: EASE }}
+          className="mt-6 text-[15px] text-paper"
         >
-          <p className="max-w-[42ch] text-base leading-relaxed text-muteb md:text-lg">
-            Prémiové studio pro značky, které chtějí víc než šablonu.
-            Strategie, design a vývoj pod jednou střechou.
-          </p>
-          <div className="mt-8 flex flex-wrap items-center gap-4">
-            <MagneticButton
-              onClick={() => scrollToId("#kontakt")}
-              className="rounded-full bg-accent px-7 py-3.5 text-sm font-medium text-ink transition-colors hover:bg-paper"
-            >
-              Nezávazná konzultace
-            </MagneticButton>
-            <MagneticButton
-              onClick={() => scrollToId("#prace")}
-              className="flex items-center gap-2 rounded-full border border-line px-7 py-3.5 text-sm text-paper transition-colors hover:border-paper/40"
-            >
-              Prohlédnout práce
-              <IconArrowDownRight size={16} stroke={2} />
-            </MagneticButton>
-          </div>
-        </motion.div>
+          For tech brands
+        </motion.p>
+      </motion.div>
 
+      {/* Video, které se scrollem přiblíží */}
+      <div className="pointer-events-none sticky top-0 z-[1] -mt-[46vh] flex h-[56vh] items-center justify-center">
         <motion.div
-          className="order-1 md:order-2 md:col-span-6 md:col-start-7"
-          initial={{ clipPath: "inset(100% 0 0 0)" }}
-          animate={ready ? { clipPath: "inset(0% 0 0 0)" } : undefined}
-          transition={{ duration: 1.1, delay: 0.45, ease: EASE }}
+          style={{ scale: vScale, y: vY, borderRadius: vRadius }}
+          className="aspect-video w-[min(340px,60vw)] overflow-hidden border border-line"
         >
-          <motion.div style={{ y: imgY }} className="relative overflow-hidden rounded-2xl border border-line">
-            <MeshTile seed={3} motif="orbit" className="aspect-[14/10] w-full" />
-            {/* plovoucí mini "live" karta */}
-            <div className="float-slow absolute bottom-5 left-5 rounded-xl border border-line bg-ink/60 px-4 py-3 backdrop-blur">
-              <div className="flex items-center gap-2 text-xs text-muteb">
-                <span className="h-1.5 w-1.5 rounded-full bg-accent" />
-                Živý náhled
-              </div>
-              <div className="mt-1 font-display text-lg font-medium tracking-tight">Vrstva Studio</div>
-            </div>
-            <div className="absolute right-5 top-5 rounded-full border border-line bg-ink/50 px-3 py-1.5 text-xs text-muteb backdrop-blur">
-              WebGL · animace
-            </div>
-          </motion.div>
+          <video
+            src={MEDIA.heroVideo}
+            className="h-full w-full object-cover"
+            autoPlay
+            loop
+            muted
+            playsInline
+          />
         </motion.div>
-      </motion.div>
+      </div>
 
-      {/* scroll indikátor */}
-      <motion.div
-        style={{ opacity: fade }}
-        initial={{ opacity: 0 }}
-        animate={ready ? { opacity: 1 } : undefined}
-        transition={{ delay: 1.1, duration: 1 }}
-        className="absolute bottom-7 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-3 text-[11px] uppercase tracking-[0.2em] text-mute md:flex"
-      >
-        Scrolluj
-        <span className="h-9 w-px origin-top animate-[sd_1.8s_ease-in-out_infinite] bg-gradient-to-b from-accent to-transparent" />
-      </motion.div>
+      {/* Statistiky + popis — objeví se po odjetí videa */}
+      <div className="relative z-[3] mx-auto max-w-[1320px] px-5 pt-[36vh] pb-24">
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.5 }}
+          transition={{ duration: 0.9, ease: EASE }}
+          className="flex flex-col gap-10 border-t border-line pt-10 md:flex-row md:items-start md:justify-between"
+        >
+          <div className="flex gap-12">
+            {STATS.map((s) => (
+              <div key={s.label}>
+                <div className="font-display text-[34px] text-paper">{s.value}</div>
+                <div className="mt-1 text-[13px] text-mute">{s.label}</div>
+              </div>
+            ))}
+          </div>
+          <p className="max-w-[46ch] text-[15px] leading-relaxed text-mute">
+            <span className="text-paper">
+              We don't believe in one-size-fits-all solutions.
+            </span>{" "}
+            Every brand has its own story — our job is to align strategy, design
+            and motion into one clear system.
+          </p>
+        </motion.div>
+      </div>
     </section>
   );
 }
